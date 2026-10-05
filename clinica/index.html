@@ -253,6 +253,19 @@
   .chip input:checked + span { background: var(--ink); color: #fff; border-color: var(--ink); }
   .chip input:focus-visible + span { outline: 2px solid var(--aqua); outline-offset: 2px; }
 
+
+  /* Mapa: tons suaves para combinar com o tema claro */
+  .map-frame { border: 0; filter: grayscale(.85) contrast(1.05) brightness(1.04); transition: filter .6s var(--ease-out); }
+  .map-card:hover .map-frame { filter: grayscale(0) contrast(1) brightness(1); }
+  @media (min-width: 640px) {
+    .map-info {
+      background: linear-gradient(160deg, rgba(255,255,255,.88), rgba(255,255,255,.62));
+      border: 1px solid rgba(255,255,255,.9);
+      box-shadow: 0 20px 50px -20px rgba(13,27,42,.25);
+      backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
+    }
+  }
+
   /* Links com texto rolando */
   .roll { display: inline-flex; overflow: hidden; height: 1.35em; line-height: 1.35em; }
   .roll span { display: block; transition: transform .5s var(--ease-out); }
@@ -664,6 +677,36 @@
         </div>
         <p id="formMsg" class="mt-6 hidden text-sm" role="status" aria-live="polite"></p>
       </form>
+
+      <!-- Mapa — troque o endereço em MAP_QUERY (aqui e nos links abaixo) -->
+      <div class="map-card card-soft reveal relative overflow-hidden rounded-[32px] lg:col-span-12">
+        <iframe
+          class="map-frame block h-[300px] w-full bg-pearl sm:h-[440px]"
+          src="https://www.google.com/maps?q=Av.+Brigadeiro+Faria+Lima,+4500,+Itaim+Bibi,+S%C3%A3o+Paulo+-+SP&z=16&output=embed"
+          title="Mapa com a localização da clínica Aether"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <div class="map-info relative flex flex-col gap-4 p-5 sm:absolute sm:bottom-6 sm:left-6 sm:max-w-sm sm:rounded-3xl sm:p-6">
+          <div class="flex items-start gap-3">
+            <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink text-white" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            </span>
+            <div>
+              <p class="font-bold">Aether Odontologia</p>
+              <address class="mt-1 text-sm not-italic text-slate2">Av. Brigadeiro Faria Lima, 4500 — 21º andar<br>Itaim Bibi, São Paulo — SP</address>
+              <p class="mt-2 text-xs text-slate2">Estacionamento com valet no local · Metrô Faria Lima a 600 m</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <a class="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white" data-cursor="hover" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&destination=Av.+Brigadeiro+Faria+Lima,+4500,+Itaim+Bibi,+S%C3%A3o+Paulo+-+SP">
+              Como chegar
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            </a>
+            <a class="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-4 py-2 text-xs font-semibold" data-cursor="hover" target="_blank" rel="noopener"
+               href="https://waze.com/ul?q=Av.+Brigadeiro+Faria+Lima,+4500,+Itaim+Bibi,+S%C3%A3o+Paulo+-+SP&navigate=yes">Abrir no Waze</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <footer class="relative border-t border-ink/5 bg-paper/70">

@@ -27,7 +27,8 @@ tools/render-assets.*   gera de novo as imagens de assets/img
    (`tab` = cor da escala, `tint` = cor multiplicada sobre os dentes). A camada dos dentes é `assets/img/sorriso-lentes-dentes.png`
    (mesmo tamanho da foto, com transparência fora dos dentes); para trocar a foto, gere uma nova máscara.
 5. **Resultados**: scroll horizontal (desktop) / carrossel (mobile) com comparador antes/depois
-6. **Agendamento + rodapé**
+6. **Agendamento + mapa + rodapé**. O mapa é um embed do Google Maps (sem chave de API); para mudar o endereço,
+   troque o texto do parâmetro `q=` no `src` do iframe e nos links "Como chegar" / "Abrir no Waze".
 
 ## Imagens
 Os casos antes/depois usam fotos reais (`paciente-1-*`, `paciente-2-*`). Para incluir mais casos, coloque o par de fotos
