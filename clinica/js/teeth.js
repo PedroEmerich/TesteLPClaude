@@ -10,6 +10,7 @@
      buildArch({ ugly, seed })       → Group  (arcada superior + inferior com gengiva)
      buildImplant()                  → Group  (parafuso + pilar + coroa, vista explodida)
      buildVeneer()                   → Group  (incisivo + lente de contato cerâmica)
+     buildShadeTab(hex)              → Group  (escala de cor: incisivo no tom + haste metálica)
      studioEnvironment(renderer, scene)  mapa de reflexo de estúdio claro
    ============================================================= */
 (() => {
@@ -240,6 +241,12 @@
     const yel = col('#E0CFA0'), yelCerv = col('#C2A266'), stain = col('#8E6B3C'), dark = col('#A59C88');
     return (nx, ny, nz, out) => {
       const inc = Math.max(0, -ny);
+      if (o.shade) {
+        // escala de cor (guia de tons): corpo na cor do tom, borda incisal translúcida, colo mais saturado
+        const base = col(o.shade), edge = col('#DDE6EE'), neck = base.clone().lerp(col('#C9A86E'), .22);
+        mixInto(out, base, edge, smooth(.65, 1, inc) * .55);
+        return mixInto(out, out, neck, smooth(.2, .95, ny) * .7);
+      }
       if (!o.ugly) {
         mixInto(out, enamel, tip, smooth(.72, 1, inc) * .75);
         return mixInto(out, out, cerv, smooth(.3, .95, ny) * .8);
@@ -409,6 +416,34 @@
   }
 
   /* =============================================================
+     ESCALA DE COR (shade tab): incisivo no tom + haste metálica
+     ============================================================= */
+  function buildShadeTab(hex) {
+    const group = new T.Group();
+    const tooth = buildIncisor('central', { shade: hex, scale: 1.25 });
+    tooth.material = enamelMat({ roughness: .2, clearcoat: 1, clearcoatRoughness: .08, envMapIntensity: .4 });
+    tooth.rotation.z = Math.PI;      // colo para baixo (preso na haste), borda incisal para cima
+    tooth.position.y = .95;
+    group.add(tooth);
+    // haste: pescoço fino que alarga para a plaqueta do rótulo
+    const sh = new T.Shape();
+    const nw = .09, pw = .36, top = .3, neckEnd = -.35, bottom = -2.1, r = .08;
+    sh.moveTo(-nw, top); sh.lineTo(nw, top);
+    sh.bezierCurveTo(nw, neckEnd + .25, pw, neckEnd + .15, pw, neckEnd - .1);
+    sh.lineTo(pw, bottom + r); sh.quadraticCurveTo(pw, bottom, pw - r, bottom);
+    sh.lineTo(-pw + r, bottom); sh.quadraticCurveTo(-pw, bottom, -pw, bottom + r);
+    sh.lineTo(-pw, neckEnd - .1);
+    sh.bezierCurveTo(-pw, neckEnd + .15, -nw, neckEnd + .25, -nw, top);
+    const handle = new T.Mesh(
+      new T.ExtrudeGeometry(sh, { depth: .07, bevelEnabled: true, bevelThickness: .015, bevelSize: .015, bevelSegments: 3, curveSegments: 24 }),
+      new T.MeshPhysicalMaterial({ color: '#F1F3F5', metalness: .75, roughness: .28, clearcoat: .5, envMapIntensity: 1.2 })
+    );
+    handle.position.z = -.035;
+    group.add(handle);
+    return group;
+  }
+
+  /* =============================================================
      AMBIENTE DE ESTÚDIO (reflexos suaves, tema claro)
      ============================================================= */
   function studioEnvironment(renderer, scene) {
@@ -435,5 +470,5 @@
     const under = new T.DirectionalLight(0xfff6ec, .3); under.position.set(1, -5, 4); scene.add(under); // preenche a face inferior da coroa
   }
 
-  window.Teeth = { buildMolar, buildIncisor, buildArch, buildImplant, buildVeneer, studioEnvironment, smooth, lerp };
+  window.Teeth = { buildMolar, buildIncisor, buildArch, buildImplant, buildVeneer, buildShadeTab, studioEnvironment, smooth, lerp };
 })();

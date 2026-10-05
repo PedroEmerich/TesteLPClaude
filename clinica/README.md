@@ -22,7 +22,10 @@ tools/render-assets.*   gera de novo as imagens de assets/img
 2. **Diagnóstico** (texto à esquerda, dente com cárie, fratura, manchas e tártaro à direita, com rótulos)
 3. **Tratamento** (ao rolar, o dente gira, fica saudável e passa para a esquerda; texto à direita).
    As duas seções compartilham um palco 3D fixo (`position: sticky`); a linha do tempo está em `createJourney()`.
-4. **Tratamentos** em bento grid com tilt 3D e borda luminosa
+4. **Tratamentos** em bento grid com tilt 3D e borda luminosa. O card de **Lentes de Contato** tem um simulador de tom:
+   passar o mouse (ou tocar) na escala de cor 3D (BL1 → A1) recolore os dentes da foto. Os tons ficam no array `SHADES`
+   (`tab` = cor da escala, `tint` = cor multiplicada sobre os dentes). A camada dos dentes é `assets/img/sorriso-lentes-dentes.png`
+   (mesmo tamanho da foto, com transparência fora dos dentes); para trocar a foto, gere uma nova máscara.
 5. **Resultados**: scroll horizontal (desktop) / carrossel (mobile) com comparador antes/depois
 6. **Agendamento + rodapé**
 

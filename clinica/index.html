@@ -207,6 +207,22 @@
   .bento-card .media { position: absolute; z-index: 0; pointer-events: none; transition: transform 1.2s var(--ease-out); }
   .bento-card:hover .media { transform: scale(1.04); }
 
+
+  /* =========================================================
+     LENTES — escala de cor 3D
+     ========================================================= */
+  .shade-tab { position: relative; display: block; border-radius: 14px; padding: 6px 0 4px; outline-offset: 2px; transition: background .3s; }
+  .shade-tab img { display: block; width: 100%; height: auto; transform-origin: 50% 90%; transition: transform .55s var(--ease-out), filter .4s; filter: drop-shadow(0 6px 6px rgba(13,27,42,.12)); }
+  .shade-tab .lbl {
+    position: absolute; left: 0; right: 0; bottom: 21%; text-align: center; pointer-events: none;
+    font-size: clamp(.6rem, 1.1vw, .82rem); font-weight: 800; letter-spacing: .02em; color: #5D6672;
+    text-shadow: 0 1px 0 rgba(255,255,255,.9), 0 -1px 0 rgba(0,0,0,.12); transition: transform .55s var(--ease-out);
+  }
+  .shade-tab:hover img, .shade-tab.is-active img, .shade-tab:focus-visible img { transform: translateY(-10%) rotate(-3deg) scale(1.04); filter: drop-shadow(0 18px 14px rgba(13,27,42,.22)); }
+  .shade-tab:hover .lbl, .shade-tab.is-active .lbl, .shade-tab:focus-visible .lbl { transform: translateY(-10%); }
+  .shade-tab.is-active { background: linear-gradient(180deg, rgba(18,169,188,0), rgba(18,169,188,.10)); }
+  .shade-tab.is-active::after { content: ""; position: absolute; left: 30%; right: 30%; bottom: 0; height: 3px; border-radius: 3px; background: var(--grad); }
+
   /* =========================================================
      CASOS — antes/depois
      ========================================================= */
@@ -497,26 +513,14 @@
         </div>
       </article>
 
-      <!-- Lentes de contato -->
-      <article class="bento-card reveal flex flex-col justify-between md:col-span-3 lg:col-span-5">
-        <div class="relative h-44 overflow-hidden">
-          <img class="media inset-0 h-full w-full object-cover object-center" src="assets/img/paciente-1-depois.jpg" alt="Sorriso após tratamento com lentes de contato dental" loading="lazy">
-        </div>
-        <div class="lift p-8 pt-6">
-          <span class="text-xs font-bold text-aqua">03</span>
-          <h3 class="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Lentes de Contato Dental</h3>
-          <p class="mt-3 text-sm text-slate2">Laminados cerâmicos ultrafinos que corrigem cor, forma e pequenos espaços.</p>
-        </div>
-      </article>
-
       <!-- Harmonização -->
-      <article class="bento-card reveal flex flex-col justify-between gap-8 bg-gradient-to-br from-blush/70 to-paper p-8 sm:flex-row sm:items-end md:col-span-4 lg:col-span-8">
+      <article class="bento-card reveal flex flex-col justify-between gap-6 bg-gradient-to-br from-blush/70 to-paper p-8 sm:flex-row sm:items-end md:col-span-3 lg:col-span-5">
         <div class="lift max-w-md">
-          <span class="text-xs font-bold text-aqua">04</span>
-          <h3 class="mt-10 text-2xl font-bold tracking-tight sm:text-4xl">Harmonização Orofacial</h3>
+          <span class="text-xs font-bold text-aqua">03</span>
+          <h3 class="mt-6 text-2xl font-bold tracking-tight sm:text-3xl">Harmonização Orofacial</h3>
           <p class="mt-3 text-sm text-slate2">Equilíbrio entre sorriso e rosto: preenchimento labial, toxina botulínica e bioestimuladores com naturalidade.</p>
         </div>
-        <svg viewBox="0 0 160 200" class="lift h-44 w-auto shrink-0 self-center" aria-hidden="true">
+        <svg viewBox="0 0 160 200" class="lift h-36 w-auto shrink-0 self-center" aria-hidden="true">
           <g fill="none" stroke="#0D1B2A" stroke-width="1.1" stroke-opacity=".55" stroke-linecap="round">
             <path d="M80 12c33 0 52 28 52 66 0 48-24 96-52 108-28-12-52-60-52-108 0-38 19-66 52-66z"/>
             <path d="M56 84c5-4 12-4 17 0M87 84c5-4 12-4 17 0"/>
@@ -530,8 +534,32 @@
         </svg>
       </article>
 
+      <!-- Lentes de contato — simulador de tom (passe o mouse na escala de cor) -->
+      <article id="lentes" class="bento-card reveal grid overflow-hidden md:col-span-6 lg:col-span-8 sm:grid-cols-[minmax(0,.95fr)_minmax(0,1.05fr)]" data-no-tilt>
+        <div class="relative self-stretch overflow-hidden bg-pearl">
+          <div class="shade-photo relative h-full min-h-[320px]">
+            <img src="assets/img/sorriso-lentes.jpg" alt="Sorriso com lentes de contato dental" class="absolute inset-0 h-full w-full object-cover object-[30%_45%]">
+            <!-- camada dos dentes recolorida em canvas (mesmo enquadramento da foto) -->
+            <canvas id="shadeCanvas" class="absolute inset-0 h-full w-full object-cover object-[30%_45%]" aria-hidden="true"></canvas>
+          </div>
+          <div class="glass absolute bottom-4 left-4 flex items-center gap-3 rounded-full py-2 pl-2 pr-4" aria-live="polite">
+            <span id="shadeSwatch" class="h-7 w-7 rounded-full border border-white shadow-inner" style="background:#F3F2EE"></span>
+            <span class="text-xs font-semibold"><span id="shadeName">BL1</span> <span class="font-normal text-slate2" id="shadeDesc">· Branco extremo</span></span>
+          </div>
+        </div>
+        <div class="lift flex flex-col p-7 sm:p-8">
+          <span class="text-xs font-bold text-aqua">04</span>
+          <h3 class="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Lentes de Contato Dental</h3>
+          <p class="mt-3 text-sm text-slate2">Laminados cerâmicos ultrafinos que corrigem cor, forma e pequenos espaços. Escolha o tom com a escala de cor:</p>
+          <p class="mt-5 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2"><span class="hidden sm:inline">Passe o mouse</span><span class="sm:hidden">Toque</span> em um tom para simular</p>
+          <div class="shade-guide mt-auto grid grid-cols-6 gap-1 pt-4" role="radiogroup" aria-label="Escala de cor das lentes">
+            <!-- Tons gerados via JS (array SHADES) -->
+          </div>
+        </div>
+      </article>
+
       <!-- CTA -->
-      <a href="#agendar" data-cursor="hover" class="bento-card reveal group flex flex-col justify-between p-8 text-white md:col-span-2 lg:col-span-4" style="background:linear-gradient(140deg,#12A9BC,#2F5BEA)">
+      <a href="#agendar" data-cursor="hover" class="bento-card reveal group flex flex-col justify-between gap-10 p-8 text-white md:col-span-6 lg:col-span-4" style="background:linear-gradient(140deg,#12A9BC,#2F5BEA)">
         <span class="lift text-[11px] font-semibold uppercase tracking-[.2em] text-white/80">Primeira consulta</span>
         <div class="lift flex items-end justify-between gap-4">
           <p class="text-2xl font-bold leading-tight">Descubra o tratamento ideal para você.</p>
@@ -1082,7 +1110,7 @@
       });
     }, { passive: true });
     if (!Env.hasGSAP) return;
-    cards.forEach(c => {
+    cards.filter(c => !c.hasAttribute('data-no-tilt')).forEach(c => {
       c.addEventListener('pointermove', e => {
         const r = c.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
@@ -1090,6 +1118,82 @@
         gsap.to(c, { rotateY: px * max, rotateX: -py * max, duration: .6, ease: 'power3.out', transformPerspective: 1200 });
       });
       c.addEventListener('pointerleave', () => gsap.to(c, { rotateY: 0, rotateX: 0, duration: 1, ease: 'elastic.out(1, .5)' }));
+    });
+  }
+
+
+  /* =============================================================
+     LENTES — simulador de tom
+     A foto tem uma camada só com os dentes (PNG com alfa). Ela é desenhada
+     num canvas e multiplicada pela cor do tom; nenhum pixel é lido, então
+     funciona também abrindo o arquivo direto (file://).
+     ============================================================= */
+  const SHADES = [
+    { id: 'BL1', desc: 'Branco extremo', tab: '#F3F2EE', tint: '#FFFFFF' },
+    { id: 'BL2', desc: 'Branco intenso', tab: '#EDEAE1', tint: '#FCF8F2' },
+    { id: 'BL3', desc: 'Branco natural', tab: '#E8E1D1', tint: '#F9F1E5' },
+    { id: 'BL4', desc: 'Branco suave', tab: '#E3D8C0', tint: '#F6E8D2' },
+    { id: 'B1', desc: 'Natural claro', tab: '#E0D2B2', tint: '#F3DFC0' },
+    { id: 'A1', desc: 'Natural', tab: '#D9C59E', tint: '#EFD3AA' },
+  ];
+
+  function shadeSimulator() {
+    const guide = $('.shade-guide'), canvas = $('#shadeCanvas');
+    if (!guide || !canvas) return;
+    guide.innerHTML = SHADES.map((sd, i) => `
+      <button type="button" class="shade-tab${i === 0 ? ' is-active' : ''}" role="radio" aria-checked="${i === 0}" data-shade="${i}" aria-label="Tom ${sd.id} — ${sd.desc}">
+        <img src="assets/img/tom-${sd.id.toLowerCase()}.png" alt="" draggable="false" loading="lazy">
+        <span class="lbl">${sd.id}</span>
+      </button>`).join('');
+
+    const ctx = canvas.getContext('2d');
+    const teeth = new Image();
+    const hexToRgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+    let cur = hexToRgb(SHADES[0].tint), target = cur.slice(), raf = 0;
+
+    const draw = rgb => {
+      if (!teeth.naturalWidth) return;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(teeth, 0, 0);
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.fillStyle = `rgb(${rgb.map(Math.round).join(',')})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.drawImage(teeth, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+    };
+    const animate = () => {
+      cur = cur.map((c, i) => lerp(c, target[i], Env.reduced ? 1 : .14));
+      draw(cur);
+      raf = cur.some((c, i) => Math.abs(c - target[i]) > .5) ? requestAnimationFrame(animate) : 0;
+      if (!raf) draw(cur = target.slice());
+    };
+    teeth.onload = () => { canvas.width = teeth.naturalWidth; canvas.height = teeth.naturalHeight; draw(cur); };
+    teeth.src = 'assets/img/sorriso-lentes-dentes.png';
+
+    const tabs = $$('.shade-tab', guide);
+    const select = i => {
+      const sd = SHADES[i];
+      tabs.forEach((t, k) => { t.classList.toggle('is-active', k === i); t.setAttribute('aria-checked', k === i); });
+      $('#shadeName').textContent = sd.id;
+      $('#shadeDesc').textContent = '· ' + sd.desc;
+      $('#shadeSwatch').style.background = sd.tab;
+      target = hexToRgb(sd.tint);
+      if (!raf) raf = requestAnimationFrame(animate);
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('pointerenter', () => select(i));
+      t.addEventListener('focus', () => select(i));
+      t.addEventListener('click', () => select(i));
+    });
+    guide.addEventListener('keydown', e => {
+      const i = tabs.findIndex(t => t.classList.contains('is-active'));
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        tabs[n].focus();
+      }
     });
   }
 
@@ -1218,6 +1322,7 @@
     createHero3D();
     createJourney();
     buildCases();
+    shadeSimulator();
     bento();
     form();
     reveals();

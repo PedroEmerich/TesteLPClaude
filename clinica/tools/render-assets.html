@@ -2,7 +2,7 @@
 <!--
   Gera as imagens de assets/img a partir dos modelos de js/teeth.js.
   Uso: node tools/render-assets.cjs   (abre esta página no Chromium e salva cada imagem)
-  Parâmetros: ?asset=molar|implant|veneer|smile|case-antes|case-depois&seed=1&w=800&h=800
+  Parâmetros: ?asset=molar|implant|veneer|shade|smile|case-antes|case-depois&seed=1&color=F2F1EC&w=800&h=800
 -->
 <html lang="pt-BR">
 <head>
@@ -48,6 +48,9 @@
       obj = Teeth.buildImplant(); obj.rotation.set(.12, -.5, -.1); camera.position.set(0, 0, 9.6); break;
     case 'veneer':
       obj = Teeth.buildVeneer(); obj.rotation.set(.06, -.25, 0); obj.position.x = -.25; camera.position.set(0, 0, 8.4); break;
+    case 'shade':
+      obj = Teeth.buildShadeTab('#' + (q.get('color') || 'F2F1EC'));
+      obj.rotation.set(.12, -.38, .03); obj.position.y = .35; camera.position.set(0, .2, 9.2); break;
     case 'smile':
       studioBg();
       obj = Teeth.buildArch({ ugly: false, seed: 3 }); obj.rotation.x = .06; camera.position.set(0, -.05, 6.6); break;
