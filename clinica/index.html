@@ -500,7 +500,7 @@
       <!-- Lentes de contato -->
       <article class="bento-card reveal flex flex-col justify-between md:col-span-3 lg:col-span-5">
         <div class="relative h-44 overflow-hidden">
-          <img class="media inset-0 h-full w-full object-cover object-[50%_30%]" src="assets/img/caso-3-depois.jpg" alt="Dentes anteriores claros e uniformes" loading="lazy">
+          <img class="media inset-0 h-full w-full object-cover object-center" src="assets/img/paciente-1-depois.jpg" alt="Sorriso após tratamento com lentes de contato dental" loading="lazy">
         </div>
         <div class="lift p-8 pt-6">
           <span class="text-xs font-bold text-aqua">03</span>
@@ -662,7 +662,7 @@
         </div>
         <div class="mt-6 flex flex-col justify-between gap-3 border-t border-ink/5 pt-6 text-[11px] text-slate2 sm:flex-row">
           <span>© <span id="year"></span> Aether Odontologia. Todos os direitos reservados.</span>
-          <span>Imagens ilustrativas (renderizações 3D). Resultados variam de paciente para paciente.</span>
+          <span>Modelos 3D meramente ilustrativos. Resultados variam de paciente para paciente.</span>
         </div>
       </div>
     </footer>
@@ -1095,22 +1095,25 @@
 
   /* =============================================================
      RESULTADOS — antes/depois + scroll horizontal
-     (troque as imagens por fotos reais autorizadas dos pacientes)
+     Para adicionar casos: coloque o par de fotos em assets/img (mesmo tamanho e
+     enquadramento) e acrescente um item em CASES. ratio = largura / altura das fotos.
      ============================================================= */
   const CASES = [
-    { name: 'Marina A.', age: 34, treatment: 'Clareamento + lentes de contato', time: '3 semanas', quote: 'Eu escondia o sorriso nas fotos. Hoje é a primeira coisa que as pessoas elogiam. A equipe me deixou tranquila em cada etapa.', img: 1 },
-    { name: 'Ricardo M.', age: 52, treatment: 'Restaurações + implante', time: '2 meses', quote: 'Voltei a mastigar sem dor e sem vergonha de sorrir. Atendimento humano do início ao fim.', img: 2 },
-    { name: 'Helena C.', age: 41, treatment: 'Facetas em cerâmica', time: '4 sessões', quote: 'Resultado natural: ninguém percebe que fiz algo, só dizem que estou mais feliz.', img: 3 },
-    { name: 'Paulo R.', age: 29, treatment: 'Limpeza, alinhamento e clareamento', time: '6 meses', quote: 'Recomendo de olhos fechados. Explicaram tudo com calma e o resultado superou o que eu imaginava.', img: 4 },
+    { name: 'Paciente 1', treatment: 'Reabilitação estética com lentes de contato', time: '4 sessões', ratio: '1016 / 496',
+      quote: 'Eu evitava sorrir em fotos. Hoje o sorriso é a primeira coisa que as pessoas notam — e ficou natural, do jeito que eu queria.',
+      before: 'assets/img/paciente-1-antes.jpg', after: 'assets/img/paciente-1-depois.jpg' },
+    { name: 'Paciente 2', treatment: 'Facetas em cerâmica + clareamento', time: '6 semanas', ratio: '1024 / 688',
+      quote: 'Mudou minha confiança. A equipe explicou cada etapa e o resultado superou o que eu imaginava.',
+      before: 'assets/img/paciente-2-antes.jpg', after: 'assets/img/paciente-2-depois.jpg' },
   ];
 
   function buildCases() {
     const track = $('#hTrack');
     track.innerHTML = CASES.map(c => `
-      <article class="case-card card-soft flex w-[86vw] shrink-0 snap-center flex-col gap-6 rounded-[28px] p-4 sm:w-[560px] sm:p-5 lg:w-[600px]">
-        <div class="compare" data-compare style="--pos:50%">
-          <img src="assets/img/caso-${c.img}-antes.jpg" alt="Antes do tratamento — ${c.name}" loading="lazy" draggable="false">
-          <div class="after"><img src="assets/img/caso-${c.img}-depois.jpg" alt="Depois do tratamento — ${c.name}" loading="lazy" draggable="false"></div>
+      <article class="case-card card-soft flex w-[86vw] shrink-0 snap-center flex-col gap-6 rounded-[28px] p-4 sm:w-[600px] sm:p-5 lg:w-[680px]">
+        <div class="compare" data-compare style="--pos:50%; aspect-ratio:${c.ratio}">
+          <img src="${c.before}" alt="Antes do tratamento — ${c.name}" loading="lazy" draggable="false">
+          <div class="after"><img src="${c.after}" alt="Depois do tratamento — ${c.name}" loading="lazy" draggable="false"></div>
           <span class="tag left-3 bg-ink/70 text-white">Antes</span>
           <span class="tag right-3 z-[4] bg-white text-ink">Depois</span>
           <div class="handle" role="slider" tabindex="0" aria-label="Comparar antes e depois — ${c.name}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
@@ -1120,7 +1123,7 @@
         <div class="flex flex-col gap-5 px-2 pb-2 sm:flex-row sm:items-start sm:justify-between">
           <blockquote class="max-w-sm leading-relaxed text-slate2">“${c.quote}”</blockquote>
           <div class="shrink-0 sm:text-right">
-            <p class="text-lg font-bold">${c.name}, ${c.age}</p>
+            <p class="text-lg font-bold">${c.name}</p>
             <p class="mt-1 text-[11px] font-semibold uppercase tracking-[.14em] text-aqua">${c.treatment}</p>
             <p class="mt-1 text-xs text-slate2">Duração: ${c.time}</p>
           </div>

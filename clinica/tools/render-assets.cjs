@@ -13,10 +13,7 @@ const JOBS = [
   { asset: 'molar-antes', w: 900, h: 900, out: 'molar-antes.png' },
   { asset: 'implant', w: 800, h: 1000, out: 'implante.png' },
   { asset: 'smile', w: 1400, h: 900, out: 'sorriso.jpg' },
-  ...[1, 2, 3, 4].flatMap(seed => [
-    { asset: 'case-antes', seed, w: 1100, h: 700, out: `caso-${seed}-antes.jpg` },
-    { asset: 'case-depois', seed, w: 1100, h: 700, out: `caso-${seed}-depois.jpg` },
-  ]),
+  // Arcadas antes/depois (opcional): { asset: 'case-antes' | 'case-depois', seed: 1..4, w: 1100, h: 700, out: 'caso-1-antes.jpg' }
 ];
 
 (async () => {

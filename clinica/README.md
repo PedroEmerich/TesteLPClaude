@@ -13,7 +13,7 @@ npx serve .
 ```
 index.html              página (HTML + Tailwind + CSS + JS das interações)
 js/teeth.js             modelos 3D procedurais (molar, incisivos, arcada, implante) em Three.js
-assets/img/             imagens renderizadas a partir dos modelos (sorriso, implante, casos antes/depois)
+assets/img/             fotos dos casos (paciente-*) e renderizações 3D (sorriso, implante, molar)
 tools/render-assets.*   gera de novo as imagens de assets/img
 ```
 
@@ -27,7 +27,9 @@ tools/render-assets.*   gera de novo as imagens de assets/img
 6. **Agendamento + rodapé**
 
 ## Imagens
-As imagens são renderizações 3D ilustrativas. Para trocar por fotos reais da clínica, substitua os arquivos em
+Os casos antes/depois usam fotos reais (`paciente-1-*`, `paciente-2-*`). Para incluir mais casos, coloque o par de fotos
+com o mesmo tamanho e enquadramento em `assets/img/` e adicione um item no array `CASES` do script.
+As demais imagens são renderizações 3D ilustrativas. Para trocar por fotos reais da clínica, substitua os arquivos em
 `assets/img/` (mesmos nomes) ou edite os `src` no HTML e o array `CASES` no script.
 Para gerar as renderizações de novo:
 
