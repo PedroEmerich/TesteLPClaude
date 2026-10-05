@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casa Cascata</title>
+<meta name="description" content="Residência contemporânea com living integrado, área gourmet e piscina com cascata. Faça um tour imersivo rolando a página.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <span class="loader__brand">Casa Cascata</span>
+  <span class="loader__bar"><span id="loaderFill"></span></span>
+</div>
+
+<header class="nav">
+  <a class="nav__brand" href="#top">Casa&nbsp;Cascata</a>
+  <nav class="nav__links">
+    <a href="#tour">Tour</a>
+    <a href="#ambientes">Ambientes</a>
+    <a href="#visita" class="nav__cta">Agendar visita</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- Tour imersivo: o "vídeo" é renderizado em canvas e acompanha o scroll -->
+  <section class="tour" id="tour">
+    <div class="tour__sticky">
+      <canvas class="tour__ambient" id="ambient" width="48" height="80" aria-hidden="true"></canvas>
+
+      <div class="tour__layout">
+        <div class="tour__copy">
+          <article class="chapter" data-from="0" data-to="0.07">
+            <p class="eyebrow">Residência contemporânea</p>
+            <h1>Uma casa que se revela a&nbsp;cada passo.</h1>
+            <p class="lead">Role a página para entrar. Da fachada à piscina com cascata, em um único percurso.</p>
+          </article>
+          <article class="chapter" data-from="0.08" data-to="0.19">
+            <p class="eyebrow">01 — Fachada</p>
+            <h2>Volumes puros, madeira e luz.</h2>
+            <p>Planos escuros emoldurados por brises verticais, jardineira suspensa e garagem coberta para dois carros.</p>
+          </article>
+          <article class="chapter" data-from="0.24" data-to="0.40">
+            <p class="eyebrow">02 — Living integrado</p>
+            <h2>Sala, cozinha e jantar em um só gesto.</h2>
+            <p>Porcelanato polido de grande formato, painel de TV em madeira e ilha gourmet conectada ao estar.</p>
+          </article>
+          <article class="chapter" data-from="0.47" data-to="0.62">
+            <p class="eyebrow">03 — Jantar</p>
+            <h2>Mesa para oito, vista para o jardim.</h2>
+            <p>Esquadrias piso-teto trazem o verde para dentro e iluminam o ambiente o dia inteiro.</p>
+          </article>
+          <article class="chapter" data-from="0.69" data-to="0.83">
+            <p class="eyebrow">04 — Área gourmet</p>
+            <h2>A água como protagonista.</h2>
+            <p>A cascata nasce do pórtico escuro e cai direto na piscina revestida em pedra natural.</p>
+          </article>
+          <article class="chapter" data-from="0.88" data-to="1.01">
+            <p class="eyebrow">05 — Lazer</p>
+            <h2>Piscina, prainha e jardim tropical.</h2>
+            <p>Um quintal pensado para receber — e para os dias de não fazer nada.</p>
+            <a class="btn" href="#visita">Agendar uma visita</a>
+          </article>
+        </div>
+
+        <div class="tour__frame">
+          <canvas id="film" aria-label="Tour em vídeo pela casa, controlado pela rolagem da página" role="img"></canvas>
+          <div class="tour__vignette"></div>
+        </div>
+
+        <ol class="tour__progress" id="progress" aria-hidden="true">
+          <li data-at="0">Fachada</li>
+          <li data-at="0.23">Living</li>
+          <li data-at="0.46">Jantar</li>
+          <li data-at="0.68">Gourmet</li>
+          <li data-at="0.86">Lazer</li>
+          <span class="tour__progress-fill" id="progressFill"></span>
+        </ol>
+      </div>
+
+      <div class="scroll-hint" id="scrollHint">
+        <span>Role para entrar</span>
+        <i></i>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts">
+    <div class="wrap facts__grid">
+      <div><strong>2</strong><span>pavimentos</span></div>
+      <div><strong>4</strong><span>suítes</span></div>
+      <div><strong>2</strong><span>vagas cobertas</span></div>
+      <div><strong>1</strong><span>piscina com cascata</span></div>
+    </div>
+  </section>
+
+  <section class="rooms" id="ambientes">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow">Ambientes</p>
+        <h2>Cada espaço, um enquadramento.</h2>
+      </header>
+      <div class="rooms__grid">
+        <figure class="room room--tall"><img src="assets/01-fachada.jpg" alt="Fachada da casa com garagem para dois carros" loading="lazy"><figcaption>Fachada</figcaption></figure>
+        <figure class="room"><img src="assets/02-sala.jpg" alt="Living integrado com sofá, cozinha e jantar" loading="lazy"><figcaption>Living integrado</figcaption></figure>
+        <figure class="room"><img src="assets/03-jantar.jpg" alt="Sala de jantar com mesa de madeira e vista para o jardim" loading="lazy"><figcaption>Jantar</figcaption></figure>
+        <figure class="room"><img src="assets/04-cascata.jpg" alt="Cascata caindo na piscina de pedra" loading="lazy"><figcaption>Cascata</figcaption></figure>
+        <figure class="room"><img src="assets/05-area-externa.jpg" alt="Área externa com piscina, prainha e área gourmet" loading="lazy"><figcaption>Área externa</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="visita">
+    <div class="wrap cta__inner">
+      <p class="eyebrow">Visita</p>
+      <h2>Conheça pessoalmente.</h2>
+      <p>Agende um horário e faça o percurso de verdade — da fachada à cascata.</p>
+      <div class="cta__actions">
+        <a class="btn" href="https://wa.me/" target="_blank" rel="noopener">Falar no WhatsApp</a>
+        <a class="btn btn--ghost" href="mailto:contato@exemplo.com">Enviar e-mail</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <span>Casa Cascata</span>
+    <span>Imagens ilustrativas.</span>
+  </div>
+</footer>
+
+<script src="tour.js"></script>
+</body>
+</html>
