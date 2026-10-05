@@ -95,7 +95,36 @@
     c.drawImage(img, dx, dy, dw, dh);
   }
 
+  // ---- Modo vídeo: quadros do vídeo único gerado pelo kie.ai (scripts/gerar-video.mjs) ----
+  const VIDEO = window.TOUR_FRAMES || null;
+  const frames = [];
+
+  function frameSrc(i) {
+    return "assets/frames/" + VIDEO.pattern.replace("{n}", String(i + 1).padStart(VIDEO.pad, "0"));
+  }
+
+  function nearestFrame(i) {
+    for (let d = 0; d < VIDEO.count; d++) {
+      if (frames[i - d]) return frames[i - d];
+      if (frames[i + d]) return frames[i + d];
+    }
+    return null;
+  }
+
+  function renderVideo(p) {
+    const img = nearestFrame(Math.round(p * (VIDEO.count - 1)));
+    if (img) {
+      ctx.clearRect(0, 0, W, H);
+      drawShot(ctx, img, { z: 1, x: 0.5, y: 0.5, a: 1, b: 0 }, W, H, 1);
+      ctx.globalAlpha = 1;
+      actx.clearRect(0, 0, ambient.width, ambient.height);
+      actx.drawImage(film, 0, 0, ambient.width, ambient.height);
+    }
+    updateUI(p);
+  }
+
   function render(p) {
+    if (VIDEO) return renderVideo(p);
     // descobre a tomada mais recente totalmente opaca: nada abaixo dela precisa ser desenhado
     const states = SHOTS.map((shot) => sample(shot.keys, p));
     let base = 0;
@@ -176,17 +205,38 @@
     });
   }
 
-  let loaded = 0;
-  Promise.all(SHOTS.map((shot) => load(shot.src).then((img) => {
-    shot.img = img;
-    loaded++;
-    loaderFill.style.width = `${(loaded / SHOTS.length) * 100}%`;
-  }))).then(() => {
+  function start() {
     resize();
     addEventListener("scroll", kick, { passive: true });
     addEventListener("resize", resize);
     setTimeout(() => loader.classList.add("is-done"), 250);
-  }).catch(() => loader.classList.add("is-done"));
+  }
+
+  let loaded = 0;
+  if (VIDEO) {
+    // primeiro um quadro a cada 8 (cobertura do percurso todo), depois o resto em segundo plano
+    const order = [];
+    for (let i = 0; i < VIDEO.count; i += 8) order.push(i);
+    if (order[order.length - 1] !== VIDEO.count - 1) order.push(VIDEO.count - 1);
+    const firstPass = order.length;
+    for (let i = 0; i < VIDEO.count; i++) if (!order.includes(i)) order.push(i);
+    const loadFrame = (i) => load(frameSrc(i)).then((img) => { frames[i] = img; }, () => {});
+    Promise.all(order.slice(0, firstPass).map((i) => loadFrame(i).then(() => {
+      loaded++;
+      loaderFill.style.width = `${(loaded / firstPass) * 100}%`;
+    }))).then(async () => {
+      start();
+      const rest = order.slice(firstPass);
+      const worker = async () => { while (rest.length) { await loadFrame(rest.shift()); if (!running) render(current); } };
+      await Promise.all(Array.from({ length: 6 }, worker));
+    });
+  } else {
+    Promise.all(SHOTS.map((shot) => load(shot.src).then((img) => {
+      shot.img = img;
+      loaded++;
+      loaderFill.style.width = `${(loaded / SHOTS.length) * 100}%`;
+    }))).then(start).catch(() => loader.classList.add("is-done"));
+  }
 
   // revelação suave da galeria
   const reveal = new IntersectionObserver((entries) => {
