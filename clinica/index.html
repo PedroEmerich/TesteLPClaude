@@ -1,0 +1,1442 @@
+<!doctype html>
+<html lang="pt-BR" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aether Clinic — Odontologia & Estética Avançada</title>
+<meta name="description" content="Odontologia digital e estética avançada de alto padrão. Planejamento 3D, laser de alta precisão e harmonização guiada por IA.">
+<meta name="theme-color" content="#050505">
+
+<!-- Fontes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Tailwind (CDN) + tema -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          void: '#050505',
+          abyss: '#0A0F1D',
+          silver: '#C9CED6',
+          ice: '#00F0FF',
+          ultra: '#7000FF',
+        },
+        fontFamily: {
+          display: ['Syne', 'sans-serif'],
+          sans: ['Inter', 'sans-serif'],
+          mono: ['"Space Grotesk"', 'monospace'],
+        },
+        letterSpacing: { tightest: '-.055em' },
+        keyframes: {
+          pulseDot: { '0%,100%': { opacity: 1, transform: 'scale(1)' }, '50%': { opacity: .35, transform: 'scale(.8)' } },
+          spinSlow: { to: { transform: 'rotate(360deg)' } },
+          marquee: { to: { transform: 'translateX(-50%)' } },
+        },
+        animation: {
+          pulseDot: 'pulseDot 2s ease-in-out infinite',
+          spinSlow: 'spinSlow 4s linear infinite',
+          marquee: 'marquee 40s linear infinite',
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  /* =========================================================
+     TOKENS
+     ========================================================= */
+  :root {
+    --void: #050505;
+    --abyss: #0A0F1D;
+    --silver: #C9CED6;
+    --ice: #00F0FF;
+    --ultra: #7000FF;
+    --line: rgba(255, 255, 255, .08);
+    --line-strong: rgba(255, 255, 255, .16);
+    --glass: rgba(255, 255, 255, .035);
+    --grad: linear-gradient(120deg, var(--ice), var(--ultra));
+    --ease-out: cubic-bezier(.16, 1, .3, 1);
+  }
+
+  html { background: var(--void); color: #fff; -webkit-font-smoothing: antialiased; }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  body { background: var(--void); font-family: Inter, sans-serif; overflow-x: hidden; }
+  ::selection { background: var(--ice); color: var(--void); }
+
+  /* Ruído de filme sutil sobre tudo */
+  .grain {
+    position: fixed; inset: -50%; z-index: 90; pointer-events: none; opacity: .045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 8s steps(10) infinite;
+  }
+  @keyframes grain {
+    0%,100% { transform: translate(0,0) } 20% { transform: translate(-5%,3%) }
+    40% { transform: translate(3%,-6%) } 60% { transform: translate(-7%,2%) } 80% { transform: translate(4%,6%) }
+  }
+
+  /* =========================================================
+     UTILITÁRIOS DE MARCA
+     ========================================================= */
+  .text-grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .text-chrome {
+    background: linear-gradient(180deg, #fff 0%, #E6E9EE 40%, #8A919C 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .eyebrow {
+    font-family: "Space Grotesk", monospace; font-size: .72rem; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--silver);
+  }
+
+  /* Glassmorphism: vidro fosco + borda sutil + brilho interno */
+  .glass {
+    background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.015));
+    border: 1px solid var(--line);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 0 40px rgba(255,255,255,.02), 0 30px 80px -20px rgba(0,0,0,.8);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  /* =========================================================
+     PRELOADER
+     ========================================================= */
+  #loader { position: fixed; inset: 0; z-index: 100; background: var(--void); display: grid; place-items: center; }
+  #loader .bar { width: min(260px, 60vw); height: 1px; background: var(--line); overflow: hidden; }
+  #loader .bar i { display: block; height: 100%; width: 0; background: var(--grad); }
+  .no-js #loader { display: none; }
+
+  /* =========================================================
+     CURSOR CUSTOMIZADO (somente dispositivos com mouse)
+     ========================================================= */
+  .cursor, .cursor-dot { position: fixed; top: 0; left: 0; z-index: 95; pointer-events: none; border-radius: 50%; display: none; }
+  .has-cursor .cursor, .has-cursor .cursor-dot { display: block; }
+  .cursor {
+    width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 1px solid rgba(255,255,255,.35);
+    transition: width .35s var(--ease-out), height .35s var(--ease-out), margin .35s var(--ease-out), background .35s, border-color .35s;
+    mix-blend-mode: difference;
+  }
+  .cursor-dot { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; background: #fff; }
+  .cursor.is-hover { width: 74px; height: 74px; margin: -37px 0 0 -37px; background: rgba(255,255,255,.95); border-color: transparent; }
+  .cursor.is-drag { width: 86px; height: 86px; margin: -43px 0 0 -43px; border-color: var(--ice); }
+  .cursor .label {
+    position: absolute; inset: 0; display: grid; place-items: center; font: 500 9px/1 "Space Grotesk"; letter-spacing: .2em;
+    text-transform: uppercase; color: #000; opacity: 0; transition: opacity .2s;
+  }
+  .cursor.is-drag .label { opacity: 1; color: #fff; }
+  .has-cursor, .has-cursor a, .has-cursor button, .has-cursor input, .has-cursor select, .has-cursor textarea { cursor: none; }
+
+  /* =========================================================
+     HERO
+     ========================================================= */
+  .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .22; filter: grayscale(.6) contrast(1.15) brightness(.55) hue-rotate(160deg); }
+  .hero-fallback {
+    position: absolute; inset: -20%;
+    background:
+      radial-gradient(40% 35% at 70% 30%, rgba(112,0,255,.18), transparent 70%),
+      radial-gradient(35% 30% at 25% 70%, rgba(0,240,255,.12), transparent 70%),
+      radial-gradient(60% 60% at 50% 50%, #0A0F1D, #050505 80%);
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes drift { to { transform: translate3d(4%, -3%, 0) scale(1.08); } }
+  .hero-vignette { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 40%, transparent 30%, var(--void) 95%), linear-gradient(to bottom, transparent 60%, var(--void)); }
+  .grid-floor {
+    position: absolute; left: -50%; right: -50%; bottom: -10%; height: 55%;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 70px 70px; transform: perspective(600px) rotateX(70deg); transform-origin: bottom;
+    mask-image: linear-gradient(to top, rgba(0,0,0,.7), transparent 80%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,.7), transparent 80%);
+  }
+
+  /* Título — cada caractere vira um span animável */
+  .split-line { display: block; overflow: hidden; padding-bottom: .06em; }
+  .char { display: inline-block; will-change: transform; }
+
+  /* CTA magnético com borda luminosa giratória */
+  .btn-magnetic {
+    position: relative; display: inline-flex; align-items: center; gap: .9rem; padding: 1.15rem 1.9rem; border-radius: 999px;
+    font-weight: 500; letter-spacing: .01em; isolation: isolate; color: #fff; will-change: transform;
+  }
+  .btn-magnetic::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; z-index: -1;
+    background: conic-gradient(from var(--angle, 0deg), transparent 0 55%, var(--ice) 70%, var(--ultra) 85%, transparent 100%), rgba(255,255,255,.14);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: spinBorder 4s linear infinite;
+  }
+  .btn-magnetic::after {
+    content: ""; position: absolute; inset: 1px; border-radius: inherit; z-index: -2;
+    background: radial-gradient(120px 60px at var(--bx, 50%) var(--by, 50%), rgba(0,240,255,.22), transparent 70%), rgba(10,15,29,.75);
+    transition: background .2s;
+  }
+  .btn-magnetic .btn-inner { display: inline-flex; align-items: center; gap: .9rem; will-change: transform; }
+  .btn-magnetic .btn-icon { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #000; transition: transform .5s var(--ease-out); }
+  .btn-magnetic:hover .btn-icon { transform: rotate(-45deg); }
+  @property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+  @keyframes spinBorder { to { --angle: 360deg; } }
+
+  /* Indicador de scroll */
+  .scroll-cue span { display: block; width: 1px; height: 56px; background: linear-gradient(var(--ice), transparent); transform-origin: top; animation: cue 2.2s var(--ease-out) infinite; }
+  @keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  /* =========================================================
+     SPOTLIGHT / ESCANEAMENTO 3D
+     ========================================================= */
+  .spotlight-stage {
+    --sx: 50%; --sy: 50%;
+    background:
+      radial-gradient(500px circle at var(--sx) var(--sy), rgba(0,240,255,.09), transparent 60%),
+      radial-gradient(900px circle at 50% 120%, rgba(112,0,255,.12), transparent 60%),
+      var(--abyss);
+  }
+  .hud-ring { position: absolute; border-radius: 50%; border: 1px dashed rgba(255,255,255,.08); }
+  .feature-card { opacity: 0; transform: translateY(30px); }
+  .no-motion .feature-card { opacity: 1; transform: none; }
+  .scan-progress i { display: block; height: 100%; width: 100%; background: var(--grad); transform-origin: left; transform: scaleX(0); }
+
+  /* =========================================================
+     BENTO GRID — tilt 3D + borda que acende perto do cursor
+     ========================================================= */
+  .bento { perspective: 1200px; }
+  .bento-card {
+    --mx: -500px; --my: -500px; --glow: 0;
+    position: relative; border-radius: 28px; overflow: hidden; transform-style: preserve-3d; will-change: transform;
+    background: linear-gradient(160deg, rgba(255,255,255,.045), rgba(255,255,255,.01)), var(--abyss);
+    border: 1px solid var(--line);
+    transition: border-color .4s;
+  }
+  /* borda em gradiente revelada por máscara radial na posição do mouse */
+  .bento-card::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; z-index: 3;
+    background: radial-gradient(380px circle at var(--mx) var(--my), var(--ice), var(--ultra) 40%, transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: var(--glow); transition: opacity .4s;
+  }
+  /* brilho interno suave seguindo o cursor */
+  .bento-card::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: radial-gradient(500px circle at var(--mx) var(--my), rgba(255,255,255,.06), transparent 50%);
+  }
+  .bento-card > * { position: relative; z-index: 2; }
+  .bento-card .lift { transform: translateZ(40px); }
+  .bento-visual { position: absolute !important; inset: 0; z-index: 0 !important; pointer-events: none; }
+
+  /* =========================================================
+     DEPOIMENTOS — scroll horizontal + antes/depois
+     ========================================================= */
+  .h-track { display: flex; gap: 2rem; width: max-content; will-change: transform; }
+  .compare { position: relative; overflow: hidden; border-radius: 22px; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+  .compare svg { display: block; width: 100%; height: auto; }
+  .compare .after { position: absolute; inset: 0; clip-path: inset(0 0 0 var(--pos, 50%)); }
+  .compare .handle { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 0; z-index: 3; touch-action: none; }
+  .compare .handle::before { content: ""; position: absolute; top: 0; bottom: 0; left: -.5px; width: 1px; background: linear-gradient(transparent, #fff 20%, #fff 80%, transparent); }
+  .compare .knob {
+    position: absolute; top: 50%; left: 0; width: 48px; height: 48px; transform: translate(-50%, -50%); border-radius: 50%;
+    display: grid; place-items: center; color: #fff; cursor: ew-resize;
+  }
+  .compare .tag { position: absolute; top: 14px; z-index: 2; font: 500 10px/1 "Space Grotesk"; letter-spacing: .22em; text-transform: uppercase; padding: 7px 10px; border-radius: 999px; }
+
+  /* =========================================================
+     FORMULÁRIO
+     ========================================================= */
+  .field { position: relative; }
+  .field input, .field select, .field textarea {
+    width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line-strong); padding: 1.6rem 0 .7rem;
+    color: #fff; font-size: 1.05rem; outline: none; border-radius: 0; appearance: none; -webkit-appearance: none;
+  }
+  .field select option { background: var(--abyss); }
+  .field label { position: absolute; left: 0; top: 1.55rem; color: rgba(255,255,255,.45); font-size: 1rem; pointer-events: none; transition: all .35s var(--ease-out); }
+  .field input:focus + label, .field input:not(:placeholder-shown) + label,
+  .field textarea:focus + label, .field textarea:not(:placeholder-shown) + label,
+  .field select:focus + label, .field select.filled + label {
+    top: .2rem; font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--silver);
+  }
+  .field .bar { position: absolute; left: 0; bottom: 0; height: 1px; width: 100%; background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease-out); }
+  .field input:focus ~ .bar, .field select:focus ~ .bar, .field textarea:focus ~ .bar { transform: scaleX(1); }
+
+  .chip input { position: absolute; opacity: 0; pointer-events: none; }
+  .chip span { display: inline-block; padding: .6rem 1rem; border-radius: 999px; border: 1px solid var(--line-strong); font-size: .85rem; color: rgba(255,255,255,.7); transition: all .3s; }
+  .chip input:checked + span { background: #fff; color: #000; border-color: #fff; }
+  .chip input:focus-visible + span { outline: 2px solid var(--ice); outline-offset: 2px; }
+
+  /* Redes sociais: texto rola para cima no hover */
+  .roll { display: inline-flex; overflow: hidden; height: 1.3em; line-height: 1.3em; }
+  .roll span { display: block; transition: transform .5s var(--ease-out); }
+  .roll span::after { content: attr(data-text); display: block; color: var(--ice); }
+  a:hover .roll span { transform: translateY(-100%); }
+
+  /* Revelação genérica */
+  .motion .reveal { opacity: 0; transform: translateY(40px); }
+
+  /* Links do menu com sublinhado animado */
+  .nav-link { position: relative; }
+  .nav-link::after { content: ""; position: absolute; left: 0; bottom: -4px; height: 1px; width: 100%; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease-out); }
+  .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* Acessibilidade */
+  :focus-visible { outline: 2px solid var(--ice); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+    .grain { display: none; }
+  }
+</style>
+</head>
+
+<body class="selection:bg-ice">
+
+<!-- Preloader -->
+<div id="loader" aria-hidden="true">
+  <div class="flex flex-col items-center gap-6">
+    <div class="font-display text-2xl tracking-[.4em] text-chrome">AETHER</div>
+    <div class="bar"><i></i></div>
+    <div class="eyebrow text-[10px]" id="loaderPct">000</div>
+  </div>
+</div>
+
+<!-- Cursor -->
+<div class="cursor" aria-hidden="true"><span class="label">Arraste</span></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- =========================================================
+     NAVEGAÇÃO
+     ========================================================= -->
+<header id="nav" class="fixed inset-x-0 top-0 z-50 transition-all duration-500">
+  <div class="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-5 sm:px-8">
+    <a href="#top" class="flex items-center gap-3" aria-label="Aether Clinic — início">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" stroke="url(#lg)" stroke-width="1.2"/>
+        <path d="M9 21c2.5-7 4.2-10 7-10s4.5 3 7 10" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#00F0FF"/><stop offset="1" stop-color="#7000FF"/></linearGradient></defs>
+      </svg>
+      <span class="font-display text-sm font-semibold tracking-[.35em]">AETHER</span>
+    </a>
+    <nav class="hidden items-center gap-10 text-sm text-white/70 md:flex" aria-label="Principal">
+      <a class="nav-link hover:text-white" href="#tecnologia">Tecnologia</a>
+      <a class="nav-link hover:text-white" href="#tratamentos">Tratamentos</a>
+      <a class="nav-link hover:text-white" href="#casos">Casos</a>
+      <a class="nav-link hover:text-white" href="#agendar">Contato</a>
+    </nav>
+    <a href="#agendar" data-cursor="hover" class="glass hidden rounded-full px-5 py-2.5 text-sm sm:inline-flex items-center gap-2">
+      <span class="h-1.5 w-1.5 rounded-full bg-ice animate-pulseDot"></span> Agendar avaliação
+    </a>
+    <button id="menuBtn" class="md:hidden glass rounded-full p-3" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+  <!-- Menu mobile -->
+  <div id="mobileMenu" class="hidden md:hidden mx-4 glass rounded-3xl p-6">
+    <nav class="flex flex-col gap-5 font-display text-2xl" aria-label="Menu mobile">
+      <a href="#tecnologia">Tecnologia</a>
+      <a href="#tratamentos">Tratamentos</a>
+      <a href="#casos">Casos</a>
+      <a href="#agendar" class="text-grad">Agendar avaliação</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- =========================================================
+       1. HERO IMERSIVA
+       ========================================================= -->
+  <section id="hero" class="relative flex min-h-[100svh] items-center overflow-hidden">
+    <!-- Background: fallback animado + vídeo cinematográfico (troque o src pelo vídeo da clínica) -->
+    <div class="absolute inset-0" aria-hidden="true">
+      <div class="hero-fallback"></div>
+      <!--
+        VÍDEO DE FUNDO: coloque um MP4 curto (8–15s, 1080p, ~3–5MB) em assets/hero.mp4.
+        Se o arquivo não existir, o vídeo é removido e fica apenas o fundo animado acima.
+      -->
+      <video id="heroVideo" class="hero-video" autoplay muted loop playsinline preload="metadata">
+        <source src="assets/hero.mp4" type="video/mp4">
+      </video>
+      <div class="grid-floor"></div>
+      <!-- Canvas Three.js: objetos 3D flutuantes -->
+      <canvas id="heroCanvas" class="absolute inset-0 h-full w-full"></canvas>
+      <div class="hero-vignette"></div>
+    </div>
+
+    <div class="relative z-10 mx-auto w-full max-w-[1500px] px-4 pt-28 pb-20 sm:px-8">
+      <div class="mb-8 flex items-center gap-3 hero-fade">
+        <span class="h-px w-10 bg-gradient-to-r from-ice to-ultra"></span>
+        <span class="eyebrow">Odontologia digital · Estética avançada</span>
+      </div>
+
+      <h1 id="heroTitle" class="font-display font-bold leading-[.92] tracking-tightest text-[clamp(2.9rem,9vw,9.5rem)]">
+        <span class="split-line text-chrome" data-split>A Evolução</span>
+        <span class="split-line" data-split><span class="text-white/40 font-medium">do</span> <span class="text-chrome">Sorriso</span></span>
+        <span class="split-line" data-split><span class="text-white/40 font-medium">e da</span> <span class="text-grad">Estética</span></span>
+      </h1>
+
+      <div class="mt-10 grid gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+        <p class="max-w-xl text-lg leading-relaxed text-white/60 hero-fade">
+          <span id="dynamicWord" class="inline-block text-white">Precisão digital</span> em cada detalhe.
+          Planejamento de nível micrométrico e conforto absoluto — do primeiro escaneamento ao sorriso final.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-6 hero-fade">
+          <a href="#agendar" class="btn-magnetic" data-magnetic data-cursor="hover">
+            <span class="btn-inner">
+              Agendar experiência
+              <span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </a>
+          <a href="#tecnologia" class="text-sm text-white/60 hover:text-white nav-link">Conheça a tecnologia</a>
+        </div>
+      </div>
+
+      <!-- Métricas -->
+      <dl class="mt-20 grid max-w-3xl grid-cols-3 gap-6 border-t border-white/10 pt-8 hero-fade">
+        <div><dt class="eyebrow text-[10px]">Precisão</dt><dd class="mt-2 font-display text-2xl sm:text-4xl"><span data-count="20">0</span><span class="text-white/40">µm</span></dd></div>
+        <div><dt class="eyebrow text-[10px]">Pacientes</dt><dd class="mt-2 font-display text-2xl sm:text-4xl"><span data-count="12">0</span><span class="text-white/40">k+</span></dd></div>
+        <div><dt class="eyebrow text-[10px]">Satisfação</dt><dd class="mt-2 font-display text-2xl sm:text-4xl"><span data-count="99">0</span><span class="text-white/40">%</span></dd></div>
+      </dl>
+    </div>
+
+    <div class="scroll-cue absolute bottom-8 right-6 z-10 hidden flex-col items-center gap-3 sm:flex sm:right-8" aria-hidden="true">
+      <span></span>
+      <p class="eyebrow text-[9px] [writing-mode:vertical-rl]">Scroll</p>
+    </div>
+  </section>
+
+  <!-- Faixa de marcas/tecnologias -->
+  <div class="relative overflow-hidden border-y border-white/5 py-6" aria-hidden="true">
+    <div class="flex w-max animate-marquee gap-16 whitespace-nowrap font-mono text-sm uppercase tracking-[.3em] text-white/30">
+      <span>Scanner Intraoral 3D</span><span>✦</span><span>Laser Er:YAG</span><span>✦</span><span>CAD/CAM Chairside</span><span>✦</span><span>Tomografia Cone Beam</span><span>✦</span><span>Digital Smile Design</span><span>✦</span><span>Sedação Consciente</span><span>✦</span>
+      <span>Scanner Intraoral 3D</span><span>✦</span><span>Laser Er:YAG</span><span>✦</span><span>CAD/CAM Chairside</span><span>✦</span><span>Tomografia Cone Beam</span><span>✦</span><span>Digital Smile Design</span><span>✦</span><span>Sedação Consciente</span><span>✦</span>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       2. O FUTURO DA ODONTOLOGIA — Spotlight + escaneamento 3D
+       ========================================================= -->
+  <section id="tecnologia" class="relative">
+    <div id="scanPin" class="spotlight-stage relative flex min-h-[100svh] items-center overflow-hidden">
+      <!-- Anéis de HUD -->
+      <div class="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
+        <div class="hud-ring h-[70vmin] w-[70vmin]"></div>
+        <div class="hud-ring h-[92vmin] w-[92vmin] opacity-50"></div>
+        <div class="hud-ring h-[48vmin] w-[48vmin] border-solid !border-white/5"></div>
+      </div>
+
+      <!-- Canvas do modelo dental (nuvem de pontos com linha de escaneamento) -->
+      <canvas id="scanCanvas" class="absolute inset-0 h-full w-full" aria-label="Modelo 3D de escaneamento dental" role="img"></canvas>
+
+      <div class="relative z-10 mx-auto grid w-full max-w-[1500px] gap-10 px-4 py-24 sm:px-8 lg:grid-cols-12 lg:py-12 lg:items-center">
+        <div class="lg:col-span-5">
+          <p class="eyebrow mb-6 reveal">02 — O futuro da odontologia</p>
+          <h2 class="font-display text-[clamp(2.2rem,5vw,4.6rem)] font-semibold leading-[.98] tracking-tightest reveal">
+            Seu sorriso,<br><span class="text-grad">escaneado</span> em<br>alta definição.
+          </h2>
+          <p class="mt-6 max-w-md text-white/55 reveal">
+            Em 3 minutos, um scanner intraoral captura mais de 1 milhão de pontos da sua arcada. Sem moldagem, sem desconforto — apenas dados precisos.
+          </p>
+
+          <!-- Telemetria -->
+          <div class="mt-10 max-w-sm reveal">
+            <div class="mb-3 flex justify-between font-mono text-[11px] uppercase tracking-[.2em] text-white/45">
+              <span>Escaneamento</span><span><span id="scanPct">0</span>%</span>
+            </div>
+            <div class="scan-progress h-px w-full bg-white/10"><i id="scanBar"></i></div>
+            <div class="mt-3 flex justify-between font-mono text-[10px] text-white/30">
+              <span>PTS <span id="scanPts">0</span></span><span>RES 0.02MM</span><span>FPS 60</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards de diferenciais que surgem conforme o progresso -->
+        <div class="flex flex-col justify-end gap-4 lg:col-span-4 lg:col-start-9">
+          <article class="feature-card glass rounded-3xl p-6 lg:p-5" data-at="0.15">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="font-mono text-xs text-ice">01</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" class="text-white/60"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>
+            </div>
+            <h3 class="font-display text-xl">Planejamento 3D em Tempo Real</h3>
+            <p class="mt-2 text-sm leading-relaxed text-white/55">Visualize o resultado final antes do primeiro procedimento, com simulação fotorrealista do seu novo sorriso.</p>
+          </article>
+          <article class="feature-card glass rounded-3xl p-6 lg:p-5" data-at="0.42">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="font-mono text-xs text-ice">02</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" class="text-white/60"><path d="M3 12h7M14 12h7"/><circle cx="12" cy="12" r="2"/><path d="M12 3v3M12 18v3"/></svg>
+            </div>
+            <h3 class="font-display text-xl">Laser de Alta Precisão</h3>
+            <p class="mt-2 text-sm leading-relaxed text-white/55">Procedimentos minimamente invasivos, com cicatrização acelerada e praticamente sem anestesia.</p>
+          </article>
+          <article class="feature-card glass rounded-3xl p-6 lg:p-5" data-at="0.7">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="font-mono text-xs text-ice">03</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" class="text-white/60"><circle cx="12" cy="12" r="9"/><path d="M8 10h.01M16 10h.01M8 15c2.5 2 5.5 2 8 0"/></svg>
+            </div>
+            <h3 class="font-display text-xl">Harmonização Guiada por IA</h3>
+            <p class="mt-2 text-sm leading-relaxed text-white/55">Análise facial com proporção áurea e mapas de simetria para resultados naturais e personalizados.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       3. BENTO GRID DE TRATAMENTOS
+       ========================================================= -->
+  <section id="tratamentos" class="relative mx-auto max-w-[1500px] px-4 py-28 sm:px-8 sm:py-40">
+    <div class="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
+      <div>
+        <p class="eyebrow mb-6 reveal">03 — Tratamentos de alta performance</p>
+        <h2 class="font-display text-[clamp(2.2rem,5vw,4.6rem)] font-semibold leading-[.98] tracking-tightest reveal">
+          Ciência aplicada<br>à <span class="text-chrome">beleza</span>.
+        </h2>
+      </div>
+      <p class="max-w-sm text-white/55 reveal">Protocolos exclusivos desenhados por especialistas e executados com tecnologia de nível hospitalar.</p>
+    </div>
+
+    <div class="bento grid auto-rows-[minmax(260px,auto)] grid-cols-1 gap-4 md:grid-cols-6 lg:grid-cols-12">
+
+      <!-- Estética Avançada (card grande) -->
+      <article class="bento-card reveal p-8 md:col-span-6 lg:col-span-7 lg:row-span-2 flex flex-col justify-between min-h-[420px]">
+        <div class="bento-visual" aria-hidden="true">
+          <svg viewBox="0 0 600 500" class="absolute right-[-10%] top-[-5%] h-[110%] opacity-70" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="orb" cx="40%" cy="35%"><stop offset="0" stop-color="#ffffff" stop-opacity=".9"/><stop offset=".35" stop-color="#9aa3b0" stop-opacity=".35"/><stop offset="1" stop-color="#0A0F1D" stop-opacity="0"/></radialGradient>
+              <linearGradient id="ringG" x1="0" x2="1"><stop stop-color="#00F0FF"/><stop offset="1" stop-color="#7000FF"/></linearGradient>
+            </defs>
+            <circle cx="380" cy="230" r="170" fill="url(#orb)"/>
+            <g fill="none" stroke="url(#ringG)" stroke-opacity=".5">
+              <ellipse cx="380" cy="230" rx="240" ry="70" transform="rotate(-18 380 230)"/>
+              <ellipse cx="380" cy="230" rx="200" ry="200" stroke-dasharray="2 8"/>
+            </g>
+          </svg>
+        </div>
+        <div class="lift flex items-center justify-between">
+          <span class="glass rounded-full px-3 py-1.5 font-mono text-[10px] uppercase tracking-[.2em] text-white/70">Assinatura Aether</span>
+          <span class="font-mono text-xs text-white/40">01</span>
+        </div>
+        <div class="lift max-w-md">
+          <h3 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight">Estética Avançada</h3>
+          <p class="mt-4 text-white/60">Clareamento a laser, bioestimuladores e protocolos de rejuvenescimento que unem odontologia e dermatologia em um só plano.</p>
+          <ul class="mt-6 flex flex-wrap gap-2 text-xs text-white/60">
+            <li class="rounded-full border border-white/10 px-3 py-1.5">Clareamento LED</li>
+            <li class="rounded-full border border-white/10 px-3 py-1.5">Bioestimuladores</li>
+            <li class="rounded-full border border-white/10 px-3 py-1.5">Skin quality</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Implantes -->
+      <article class="bento-card reveal p-8 md:col-span-3 lg:col-span-5 flex flex-col justify-between">
+        <div class="bento-visual" aria-hidden="true">
+          <svg viewBox="0 0 200 200" class="absolute right-6 top-6 h-32 w-32 opacity-80">
+            <g fill="none" stroke="#C9CED6" stroke-width="1.2">
+              <path d="M70 30h60l-6 30H76z" fill="rgba(255,255,255,.08)"/>
+              <path d="M84 60h32v14H84z"/>
+              <path d="M88 74h24l-3 90c0 6-18 6-18 0z"/>
+              <path d="M86 90h28M87 104h26M88 118h24M89 132h22M90 146h20" stroke="#00F0FF" stroke-opacity=".7"/>
+            </g>
+          </svg>
+        </div>
+        <span class="lift font-mono text-xs text-white/40">02</span>
+        <div class="lift">
+          <h3 class="font-display text-2xl sm:text-3xl font-semibold tracking-tight">Implantes de<br>Carga Imediata</h3>
+          <p class="mt-3 max-w-xs text-sm text-white/55">Cirurgia guiada por tomografia: entre com a falha, saia com dentes fixos no mesmo dia.</p>
+        </div>
+      </article>
+
+      <!-- Lentes de contato -->
+      <article class="bento-card reveal p-8 md:col-span-3 lg:col-span-5 flex flex-col justify-between">
+        <div class="bento-visual" aria-hidden="true">
+          <div class="absolute right-6 top-6 h-28 w-28 rounded-full border border-white/10 animate-spinSlow" style="background:conic-gradient(from 0deg, transparent, rgba(0,240,255,.35), transparent 40%)"></div>
+          <div class="absolute right-[38px] top-[38px] h-16 w-16 rounded-full glass"></div>
+        </div>
+        <span class="lift font-mono text-xs text-white/40">03</span>
+        <div class="lift">
+          <h3 class="font-display text-2xl sm:text-3xl font-semibold tracking-tight">Lentes de<br>Contato Dental</h3>
+          <p class="mt-3 max-w-xs text-sm text-white/55">Laminados cerâmicos de 0,2 mm, esculpidos digitalmente para cada formato de rosto.</p>
+        </div>
+      </article>
+
+      <!-- Harmonização -->
+      <article class="bento-card reveal p-8 md:col-span-4 lg:col-span-8 flex flex-col justify-between sm:flex-row sm:items-end gap-8">
+        <div class="lift max-w-md">
+          <span class="font-mono text-xs text-white/40">04</span>
+          <h3 class="mt-10 font-display text-2xl sm:text-4xl font-semibold tracking-tight">Harmonização Orofacial</h3>
+          <p class="mt-3 text-sm text-white/55">Mapeamento facial por IA, preenchimentos e toxina botulínica com doses calculadas para naturalidade absoluta.</p>
+        </div>
+        <svg viewBox="0 0 160 200" class="lift h-40 w-auto shrink-0 self-center opacity-80" aria-hidden="true">
+          <g fill="none" stroke="#C9CED6" stroke-width=".8" stroke-opacity=".7">
+            <path d="M80 10c35 0 55 30 55 70 0 50-25 100-55 110-30-10-55-60-55-110 0-40 20-70 55-70z"/>
+            <path d="M80 10v180M25 80h110M35 130h90" stroke="#00F0FF" stroke-opacity=".35" stroke-dasharray="2 4"/>
+            <circle cx="58" cy="82" r="5"/><circle cx="102" cy="82" r="5"/>
+            <path d="M62 148c10 7 26 7 36 0"/>
+            <path d="M58 82L80 148L102 82z" stroke="#7000FF" stroke-opacity=".6"/>
+          </g>
+          <g fill="#00F0FF"><circle cx="80" cy="10" r="2"/><circle cx="25" cy="80" r="2"/><circle cx="135" cy="80" r="2"/><circle cx="80" cy="190" r="2"/></g>
+        </svg>
+      </article>
+
+      <!-- Card de CTA -->
+      <a href="#agendar" data-cursor="hover" class="bento-card reveal group p-8 md:col-span-2 lg:col-span-4 flex flex-col justify-between" style="background:linear-gradient(140deg, rgba(0,240,255,.12), rgba(112,0,255,.14)), var(--abyss)">
+        <span class="lift eyebrow">Avaliação digital</span>
+        <div class="lift flex items-end justify-between gap-4">
+          <p class="font-display text-2xl leading-tight">Descubra o protocolo ideal para você.</p>
+          <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-black transition-transform duration-500 group-hover:-rotate-45">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       4. CASOS / DEPOIMENTOS — scroll horizontal
+       ========================================================= -->
+  <section id="casos" class="relative">
+    <div id="hPin" class="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-24">
+      <div class="mx-auto mb-12 flex w-full max-w-[1500px] flex-col justify-between gap-6 px-4 sm:px-8 md:flex-row md:items-end">
+        <div>
+          <p class="eyebrow mb-6">04 — Experiência do paciente</p>
+          <h2 class="font-display text-[clamp(2.2rem,5vw,4.6rem)] font-semibold leading-[.98] tracking-tightest">
+            Transformações<br><span class="text-grad">reais</span>.
+          </h2>
+        </div>
+        <p class="max-w-sm text-sm text-white/50">Arraste o divisor de cada caso para comparar o antes e o depois. <span class="hidden lg:inline">Role para avançar.</span></p>
+      </div>
+
+      <div class="w-full overflow-x-auto lg:overflow-visible [scrollbar-width:none] snap-x snap-mandatory lg:snap-none" id="hScroller">
+        <div id="hTrack" class="h-track px-4 sm:px-8 lg:pl-[max(2rem,calc((100vw-1500px)/2+2rem))]">
+          <!-- Cards gerados via JS (array CASES) -->
+        </div>
+      </div>
+
+      <!-- progresso horizontal -->
+      <div class="mx-auto mt-12 hidden w-full max-w-[1500px] items-center gap-4 px-8 lg:flex" aria-hidden="true">
+        <span class="font-mono text-xs text-white/40">01</span>
+        <div class="h-px flex-1 bg-white/10"><div id="hProgress" class="h-full w-full origin-left scale-x-0 bg-gradient-to-r from-ice to-ultra"></div></div>
+        <span class="font-mono text-xs text-white/40" id="hTotal">04</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       5. AGENDAMENTO + RODAPÉ
+       ========================================================= -->
+  <section id="agendar" class="relative overflow-hidden border-t border-white/5 bg-abyss/40">
+    <div class="pointer-events-none absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[120px]" style="background:radial-gradient(closest-side, #7000FF, transparent)" aria-hidden="true"></div>
+
+    <div class="relative mx-auto grid max-w-[1500px] gap-16 px-4 py-28 sm:px-8 sm:py-40 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <div class="glass mb-10 inline-flex items-center gap-3 rounded-full px-4 py-2 reveal">
+          <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span></span>
+          <span class="font-mono text-[11px] uppercase tracking-[.2em] text-white/70">Agendamentos abertos para Q1 2027</span>
+        </div>
+        <h2 class="font-display text-[clamp(2.4rem,6vw,5.5rem)] font-semibold leading-[.95] tracking-tightest reveal">
+          Seu novo<br>sorriso começa<br><span class="text-grad">aqui.</span>
+        </h2>
+        <p class="mt-8 max-w-md text-white/55 reveal">Uma avaliação digital completa: escaneamento 3D, análise facial e simulação do resultado — em uma única visita de 60 minutos.</p>
+
+        <dl class="mt-12 space-y-6 text-sm reveal">
+          <div class="flex gap-6"><dt class="eyebrow w-24 shrink-0 pt-0.5">Endereço</dt><dd class="text-white/75">Av. Brigadeiro Faria Lima, 4500 — 21º andar<br>Itaim Bibi, São Paulo</dd></div>
+          <div class="flex gap-6"><dt class="eyebrow w-24 shrink-0 pt-0.5">Horário</dt><dd class="text-white/75">Seg–Sex 8h–20h · Sáb 9h–14h</dd></div>
+          <div class="flex gap-6"><dt class="eyebrow w-24 shrink-0 pt-0.5">Concierge</dt><dd><a href="tel:+5511900000000" class="text-white/75 hover:text-ice">+55 11 90000-0000</a></dd></div>
+        </dl>
+      </div>
+
+      <!-- Formulário minimalista -->
+      <form id="bookingForm" class="glass rounded-[32px] p-6 sm:p-12 lg:col-span-6 lg:col-start-7 reveal" novalidate>
+        <div class="grid gap-8 sm:grid-cols-2">
+          <div class="field sm:col-span-2">
+            <input id="f-name" name="name" type="text" placeholder=" " autocomplete="name" required>
+            <label for="f-name">Nome completo</label><span class="bar"></span>
+          </div>
+          <div class="field">
+            <input id="f-phone" name="phone" type="tel" placeholder=" " autocomplete="tel" inputmode="tel" required>
+            <label for="f-phone">WhatsApp</label><span class="bar"></span>
+          </div>
+          <div class="field">
+            <input id="f-email" name="email" type="email" placeholder=" " autocomplete="email" required>
+            <label for="f-email">E-mail</label><span class="bar"></span>
+          </div>
+          <fieldset class="sm:col-span-2">
+            <legend class="eyebrow mb-4">Interesse</legend>
+            <div class="flex flex-wrap gap-2">
+              <label class="chip"><input type="checkbox" name="interest" value="estetica"><span>Estética avançada</span></label>
+              <label class="chip"><input type="checkbox" name="interest" value="implantes"><span>Implantes</span></label>
+              <label class="chip"><input type="checkbox" name="interest" value="lentes"><span>Lentes de contato</span></label>
+              <label class="chip"><input type="checkbox" name="interest" value="harmonizacao"><span>Harmonização</span></label>
+            </div>
+          </fieldset>
+          <div class="field sm:col-span-2">
+            <select id="f-period" name="period" required>
+              <option value="" disabled selected hidden></option>
+              <option>Manhã</option><option>Tarde</option><option>Noite</option>
+            </select>
+            <label for="f-period">Melhor período</label><span class="bar"></span>
+          </div>
+        </div>
+
+        <div class="mt-12 flex flex-col-reverse items-start justify-between gap-6 sm:flex-row sm:items-center">
+          <p class="max-w-[16rem] text-xs text-white/40">Seus dados são protegidos conforme a LGPD. Retornamos em até 2h úteis.</p>
+          <button type="submit" class="btn-magnetic" data-magnetic data-cursor="hover">
+            <span class="btn-inner">
+              <span id="submitLabel">Solicitar horário</span>
+              <span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </button>
+        </div>
+        <p id="formMsg" class="mt-6 hidden text-sm" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="relative border-t border-white/5">
+      <div class="mx-auto max-w-[1500px] px-4 py-14 sm:px-8">
+        <div class="grid gap-12 md:grid-cols-3">
+          <div>
+            <span class="font-display text-sm font-semibold tracking-[.35em]">AETHER</span>
+            <p class="mt-4 max-w-xs text-sm text-white/45">Odontologia digital & estética avançada. Responsável técnico: Dr(a). Nome Sobrenome — CRO-SP 00000.</p>
+          </div>
+          <nav aria-label="Redes sociais" class="flex flex-col gap-3 text-sm">
+            <span class="eyebrow mb-2">Social</span>
+            <a href="#" class="w-fit text-white/75"><span class="roll"><span data-text="Instagram ↗">Instagram ↗</span></span></a>
+            <a href="#" class="w-fit text-white/75"><span class="roll"><span data-text="YouTube ↗">YouTube ↗</span></span></a>
+            <a href="#" class="w-fit text-white/75"><span class="roll"><span data-text="LinkedIn ↗">LinkedIn ↗</span></span></a>
+            <a href="#" class="w-fit text-white/75"><span class="roll"><span data-text="WhatsApp ↗">WhatsApp ↗</span></span></a>
+          </nav>
+          <div class="flex flex-col gap-3 text-sm">
+            <span class="eyebrow mb-2">Contato</span>
+            <a href="mailto:concierge@aether.clinic" class="w-fit text-white/75"><span class="roll"><span data-text="concierge@aether.clinic">concierge@aether.clinic</span></span></a>
+            <a href="tel:+5511900000000" class="w-fit text-white/75"><span class="roll"><span data-text="+55 11 90000-0000">+55 11 90000-0000</span></span></a>
+          </div>
+        </div>
+        <!-- Assinatura gigante -->
+        <div class="mt-16 select-none overflow-hidden" aria-hidden="true">
+          <p class="font-display font-extrabold leading-none tracking-tightest text-[22vw] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,.08)]">AETHER</p>
+        </div>
+        <div class="mt-6 flex flex-col justify-between gap-3 border-t border-white/5 pt-6 font-mono text-[11px] text-white/35 sm:flex-row">
+          <span>© <span id="year"></span> Aether Clinic. Todos os direitos reservados.</span>
+          <span>Imagens meramente ilustrativas. Resultados variam de paciente para paciente.</span>
+        </div>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<!-- =========================================================
+     BIBLIOTECAS
+     ========================================================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+/* =============================================================
+   AETHER — Interações
+   Módulos: Env · Loader · Scroll · Cursor · Magnetic · Hero3D ·
+            HeroIntro · Scan3D · Bento · Cases · Form
+   ============================================================= */
+(() => {
+  'use strict';
+
+  /* ---------- Ambiente / feature detection ---------- */
+  const root = document.documentElement;
+  root.classList.remove('no-js');
+  const Env = {
+    reduced: matchMedia('(prefers-reduced-motion: reduce)').matches,
+    finePointer: matchMedia('(hover: hover) and (pointer: fine)').matches,
+    get mobile() { return innerWidth < 1024; },
+    hasGSAP: !!(window.gsap && window.ScrollTrigger),
+    hasThree: !!window.THREE,
+  };
+  const motionOK = Env.hasGSAP && !Env.reduced;
+  root.classList.add(motionOK ? 'motion' : 'no-motion');
+  if (Env.hasGSAP) gsap.registerPlugin(ScrollTrigger);
+
+  const $ = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  $('#year').textContent = new Date().getFullYear();
+
+  /* ---------- Vídeo de fundo: remove se não carregar ---------- */
+  const video = $('#heroVideo');
+  const killVideo = () => video && video.remove();
+  video?.querySelector('source')?.addEventListener('error', killVideo);
+  video?.addEventListener('error', killVideo);
+  if (Env.reduced) video?.pause();
+
+  /* ---------- Menu mobile ---------- */
+  const menuBtn = $('#menuBtn'), mobileMenu = $('#mobileMenu');
+  menuBtn.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('hidden') === false;
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  $$('a', mobileMenu).forEach(a => a.addEventListener('click', () => { mobileMenu.classList.add('hidden'); menuBtn.setAttribute('aria-expanded', false); }));
+
+  /* =============================================================
+     SMOOTH SCROLL (Lenis) integrado ao ScrollTrigger
+     ============================================================= */
+  let lenis = null;
+  if (window.Lenis && !Env.reduced) {
+    lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    if (Env.hasGSAP) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(t => lenis.raf(t * 1000));
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
+  }
+  // Âncoras internas usam o Lenis (delegação: cobre links gerados via JS)
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute('href');
+    const target = id.length > 1 && $(id);
+    if (!target) return;
+    e.preventDefault();
+    lenis ? lenis.scrollTo(target, { offset: 0, duration: 1.6 }) : target.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Navbar ganha vidro após o hero
+  const nav = $('#nav');
+  const onScrollNav = () => nav.classList.toggle('glass', scrollY > 60);
+  addEventListener('scroll', onScrollNav, { passive: true });
+  onScrollNav();
+
+  /* =============================================================
+     CURSOR CUSTOMIZADO (desktop apenas)
+     ============================================================= */
+  const Cursor = (() => {
+    if (!Env.finePointer || Env.reduced) return { setDrag() {} };
+    root.classList.add('has-cursor');
+    const ring = $('.cursor'), dot = $('.cursor-dot');
+    const pos = { x: innerWidth / 2, y: innerHeight / 2 }, ringPos = { ...pos };
+    addEventListener('pointermove', e => { pos.x = e.clientX; pos.y = e.clientY; }, { passive: true });
+    const tick = () => {
+      ringPos.x = lerp(ringPos.x, pos.x, .18);
+      ringPos.y = lerp(ringPos.y, pos.y, .18);
+      ring.style.transform = `translate3d(${ringPos.x}px, ${ringPos.y}px, 0)`;
+      dot.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+      requestAnimationFrame(tick);
+    };
+    tick();
+    document.addEventListener('pointerover', e => {
+      if (e.target.closest('a, button, [data-cursor="hover"], .chip')) ring.classList.add('is-hover');
+    });
+    document.addEventListener('pointerout', e => {
+      if (e.target.closest('a, button, [data-cursor="hover"], .chip')) ring.classList.remove('is-hover');
+    });
+    document.addEventListener('mouseleave', () => { ring.style.opacity = 0; dot.style.opacity = 0; });
+    document.addEventListener('mouseenter', () => { ring.style.opacity = 1; dot.style.opacity = 1; });
+    return { setDrag(on) { ring.classList.toggle('is-drag', on); if (on) ring.classList.remove('is-hover'); } };
+  })();
+
+  /* =============================================================
+     BOTÕES MAGNÉTICOS + brilho que segue o mouse
+     ============================================================= */
+  if (Env.finePointer && !Env.reduced) {
+    $$('[data-magnetic]').forEach(btn => {
+      const inner = $('.btn-inner', btn);
+      const strength = 0.35;
+      btn.addEventListener('pointermove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        btn.style.setProperty('--bx', `${e.clientX - r.left}px`);
+        btn.style.setProperty('--by', `${e.clientY - r.top}px`);
+        if (Env.hasGSAP) {
+          gsap.to(btn, { x: x * strength, y: y * strength, duration: .6, ease: 'power3.out' });
+          gsap.to(inner, { x: x * strength * .5, y: y * strength * .5, duration: .6, ease: 'power3.out' });
+        }
+      });
+      btn.addEventListener('pointerleave', () => {
+        if (Env.hasGSAP) gsap.to([btn, inner], { x: 0, y: 0, duration: 1, ease: 'elastic.out(1, .35)' });
+      });
+    });
+  }
+
+  /* =============================================================
+     HERO 3D — objetos metálicos flutuantes + partículas (Three.js)
+     ============================================================= */
+  function createHero3D() {
+    const canvas = $('#heroCanvas');
+    if (!Env.hasThree || !canvas) return;
+    const lite = Env.mobile;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !lite, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, lite ? 1 : 1.75));
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, 1, .1, 100);
+    camera.position.set(0, 0, 12);
+
+    // Luzes: chave ciano, recorte violeta, preenchimento branco
+    scene.add(new THREE.AmbientLight(0xffffff, .25));
+    const l1 = new THREE.PointLight(0x00f0ff, 2.2, 40); l1.position.set(6, 4, 6); scene.add(l1);
+    const l2 = new THREE.PointLight(0x7000ff, 2.5, 40); l2.position.set(-6, -3, 4); scene.add(l2);
+    const l3 = new THREE.DirectionalLight(0xffffff, .9); l3.position.set(0, 5, 8); scene.add(l3);
+
+    // Mapa de ambiente procedural (estúdio com faixas de luz) para o reflexo cromado
+    const envCanvas = document.createElement('canvas'); envCanvas.width = 512; envCanvas.height = 256;
+    const g = envCanvas.getContext('2d');
+    const sky = g.createLinearGradient(0, 0, 0, 256);
+    sky.addColorStop(0, '#1a2440'); sky.addColorStop(.5, '#05070d'); sky.addColorStop(1, '#000');
+    g.fillStyle = sky; g.fillRect(0, 0, 512, 256);
+    [[60, '#ffffff', 26], [210, '#00F0FF', 14], [330, '#ffffff', 10], [420, '#7000FF', 22]].forEach(([x, c, w]) => {
+      const band = g.createLinearGradient(x - w, 0, x + w, 0);
+      band.addColorStop(0, 'transparent'); band.addColorStop(.5, c); band.addColorStop(1, 'transparent');
+      g.fillStyle = band; g.fillRect(x - w, 30, w * 2, 120);
+    });
+    const envTex = new THREE.CanvasTexture(envCanvas);
+    envTex.mapping = THREE.EquirectangularReflectionMapping;
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromEquirectangular(envTex).texture;
+    envTex.dispose(); pmrem.dispose();
+
+    const chrome = new THREE.MeshPhysicalMaterial({ color: 0xdfe4ea, metalness: 1, roughness: .16, clearcoat: 1, clearcoatRoughness: .08 });
+    const wire = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: .12 });
+
+    const group = new THREE.Group(); scene.add(group);
+    const items = [];
+    const add = (geo, x, y, z, s, withWire) => {
+      const m = new THREE.Mesh(geo, chrome); m.position.set(x, y, z); m.scale.setScalar(s);
+      if (withWire) { const w = new THREE.Mesh(geo, wire); w.scale.setScalar(1.18); m.add(w); }
+      m.userData = { baseY: y, speed: .4 + Math.random() * .6, phase: Math.random() * 6.28, rot: new THREE.Vector3(Math.random() * .4, Math.random() * .4, 0) };
+      group.add(m); items.push(m);
+    };
+    // Composição concentrada à direita (o título ocupa a esquerda)
+    add(new THREE.IcosahedronGeometry(1, lite ? 1 : 2), 1.2, .9, 0, 1.25, true);
+    add(new THREE.TorusGeometry(.8, .22, 24, lite ? 48 : 96), 3.4, 2.6, -2, .9, false);
+    add(new THREE.OctahedronGeometry(.7, 0), -.6, -2.2, 1, .7, true);
+    if (!lite) {
+      add(new THREE.TorusKnotGeometry(.5, .16, 128, 16), -1.6, 2.7, -2, .7, false);
+      add(new THREE.SphereGeometry(.35, 32, 32), 4.4, -.9, -3, 1, false);
+    }
+
+    // Partículas de poeira
+    const count = lite ? 250 : 900;
+    const pGeo = new THREE.BufferGeometry();
+    const arr = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) { arr[i*3] = (Math.random() - .5) * 30; arr[i*3+1] = (Math.random() - .5) * 18; arr[i*3+2] = (Math.random() - .5) * 14; }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+    const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xbfefff, size: .03, transparent: true, opacity: .6 }));
+    scene.add(particles);
+
+    const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+    if (Env.finePointer) addEventListener('pointermove', e => { mouse.tx = e.clientX / innerWidth - .5; mouse.ty = e.clientY / innerHeight - .5; }, { passive: true });
+
+    const resize = () => {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+      // Desktop: grupo deslocado para a direita; mobile: centralizado, menor e ao fundo
+      const desk = w >= 1024;
+      group.position.set(desk ? 3.2 : 1.2, desk ? 0 : 3.6, desk ? 0 : -5);
+      group.scale.setScalar(desk ? 1 : .6);
+      canvas.style.opacity = desk ? 1 : .55;
+    };
+    resize(); addEventListener('resize', resize);
+
+    // Renderiza apenas quando visível
+    let visible = true, scrollP = 0;
+    new IntersectionObserver(([e]) => visible = e.isIntersecting).observe(canvas);
+    if (Env.hasGSAP) ScrollTrigger.create({ trigger: '#hero', start: 'top top', end: 'bottom top', onUpdate: s => scrollP = s.progress });
+
+    const clock = new THREE.Clock();
+    const loop = () => {
+      requestAnimationFrame(loop);
+      if (!visible) return;
+      const t = clock.getElapsedTime();
+      mouse.x = lerp(mouse.x, mouse.tx, .05); mouse.y = lerp(mouse.y, mouse.ty, .05);
+      items.forEach(m => {
+        const d = m.userData;
+        m.position.y = d.baseY + Math.sin(t * d.speed + d.phase) * .35 + scrollP * 3 * d.speed;
+        m.rotation.x += .002 + d.rot.x * .01; m.rotation.y += .003 + d.rot.y * .01;
+      });
+      group.rotation.y = mouse.x * .35; group.rotation.x = mouse.y * .2;
+      particles.rotation.y = t * .015;
+      camera.position.z = 12 + scrollP * 4;
+      renderer.render(scene, camera);
+    };
+    Env.reduced ? renderer.render(scene, camera) : loop();
+  }
+
+  /* =============================================================
+     HERO INTRO — split de caracteres + entrada
+     ============================================================= */
+  function splitChars(el) {
+    // Percorre os nós de texto preservando spans de estilo
+    const walk = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          [...n.textContent].forEach(ch => {
+            if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); return; }
+            const s = document.createElement('span'); s.className = 'char'; s.textContent = ch; frag.appendChild(s);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) walk(n);
+      });
+    };
+    walk(el);
+    // background-clip:text não atravessa inline-blocks transformados:
+    // o gradiente passa para cada caractere, alinhado à largura da palavra inteira.
+    $$('.text-grad, .text-chrome', el).concat(el.matches('.text-grad, .text-chrome') ? [el] : []).forEach(parent => {
+      const cls = parent.classList.contains('text-grad') ? 'text-grad' : 'text-chrome';
+      const chars = $$('.char', parent);
+      parent.classList.remove(cls);
+      const pr = parent.getBoundingClientRect();
+      chars.forEach(c => {
+        c.classList.add(cls);
+        c.style.backgroundSize = `${pr.width}px 100%`;
+        c.style.backgroundPosition = `${pr.left - c.getBoundingClientRect().left}px 0`;
+      });
+    });
+  }
+
+  function heroIntro() {
+    const title = $('#heroTitle');
+    title.setAttribute('aria-label', title.textContent.replace(/\s+/g, ' ').trim());
+    $$('[data-split]', title).forEach(l => { l.setAttribute('aria-hidden', 'true'); splitChars(l); });
+
+    // Contadores das métricas
+    const counters = $$('[data-count]');
+    const runCounters = () => counters.forEach(el => {
+      const end = +el.dataset.count;
+      if (!motionOK) { el.textContent = end; return; }
+      const o = { v: 0 };
+      gsap.to(o, { v: end, duration: 2.2, ease: 'power3.out', onUpdate: () => el.textContent = Math.round(o.v) });
+    });
+
+    if (!motionOK) { runCounters(); return; }
+
+    const tl = gsap.timeline({ delay: .1 });
+    tl.from('#heroTitle .char', { yPercent: 115, rotate: 8, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: .028 })
+      .from('.hero-fade', { y: 30, opacity: 0, duration: 1, ease: 'power3.out', stagger: .12 }, '-=.8')
+      .add(runCounters, '-=.9')
+      .from('#heroCanvas', { autoAlpha: 0, duration: 2, clearProps: 'visibility' }, 0);
+
+    // Parallax de saída do título
+    gsap.to('#heroTitle', { yPercent: -18, opacity: .2, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+    // Palavra dinâmica do subtítulo
+    const words = ['Precisão digital', 'Tecnologia de ponta', 'Conforto absoluto', 'Estética autoral'];
+    const w = $('#dynamicWord'); let i = 0;
+    setInterval(() => {
+      i = (i + 1) % words.length;
+      gsap.to(w, { opacity: 0, y: -8, duration: .35, ease: 'power2.in', onComplete: () => {
+        w.textContent = words[i];
+        gsap.fromTo(w, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' });
+      } });
+    }, 2800);
+  }
+
+  /* =============================================================
+     SCAN 3D — nuvem de pontos de um molar com linha de varredura
+     (geração procedural; substitua por um GLB/Spline do seu scanner)
+     ============================================================= */
+  function createScan3D() {
+    const canvas = $('#scanCanvas');
+    const stage = $('#scanPin');
+    let progress = 0;
+
+    // Spotlight segue o mouse
+    if (Env.finePointer) stage.addEventListener('pointermove', e => {
+      const r = stage.getBoundingClientRect();
+      stage.style.setProperty('--sx', `${e.clientX - r.left}px`);
+      stage.style.setProperty('--sy', `${e.clientY - r.top}px`);
+    });
+
+    const cards = $$('.feature-card');
+    const pctEl = $('#scanPct'), ptsEl = $('#scanPts'), bar = $('#scanBar');
+    let totalPts = 0;
+    const updateUI = p => {
+      progress = p;
+      pctEl.textContent = Math.round(p * 100);
+      ptsEl.textContent = Math.round(p * 1048576).toLocaleString('pt-BR');
+      bar.style.transform = `scaleX(${p})`;
+      cards.forEach(c => {
+        const at = +c.dataset.at;
+        const k = clamp((p - at) / .12, 0, 1);
+        c.style.opacity = k; c.style.transform = `translateY(${(1 - k) * 30}px)`;
+      });
+    };
+
+    // Pin + scrub no desktop; no mobile, scroll normal com progresso pela passagem da seção
+    if (motionOK) {
+      const mm = gsap.matchMedia();
+      mm.add('(min-width: 1024px)', () => {
+        ScrollTrigger.create({ trigger: stage, start: 'top top', end: '+=180%', pin: true, scrub: true, onUpdate: s => updateUI(s.progress) });
+      });
+      mm.add('(max-width: 1023px)', () => {
+        ScrollTrigger.create({ trigger: stage, start: 'top 80%', end: 'bottom 60%', scrub: true, onUpdate: s => updateUI(s.progress) });
+      });
+    } else updateUI(1);
+
+    if (!Env.hasThree) return;
+
+    const lite = Env.mobile;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, lite ? 1 : 1.5));
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, .1, 100);
+    camera.position.set(0, 0, 9);
+
+    // ---- Geometria procedural do dente (coroa + 2 raízes) ----
+    const N = lite ? 9000 : 26000;
+    const pos = new Float32Array(N * 3), rnd = new Float32Array(N);
+    const v = new THREE.Vector3();
+    for (let i = 0; i < N; i++) {
+      const r = Math.random();
+      if (r < .62) {
+        // Coroa: esfera achatada com cúspides
+        v.set(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).normalize();
+        const phi = Math.atan2(v.z, v.x);
+        const cusp = Math.max(0, v.y) * (.22 * Math.pow(Math.abs(Math.cos(phi * 2)), 3));
+        const fissure = v.y > .55 ? -.08 * (1 - Math.abs(Math.sin(phi * 2))) : 0;
+        v.x *= 1.15; v.z *= 1.0; v.y = v.y * .78 + cusp + fissure;
+        if (v.y < -.35) v.y = -.35 - (v.y + .35) * .25; // colo do dente
+        v.y += .55;
+      } else {
+        // Raízes: cones afunilados levemente curvos
+        const side = Math.random() < .5 ? -1 : 1;
+        const t = Math.pow(Math.random(), .8);           // 0 topo → 1 ápice
+        const rad = lerp(.48, .06, t);
+        const a = Math.random() * Math.PI * 2;
+        v.set(side * (.42 + t * .18) + Math.cos(a) * rad, -t * 2.1, Math.sin(a) * rad * .8);
+      }
+      v.x += (Math.random() - .5) * .015; v.y += (Math.random() - .5) * .015; v.z += (Math.random() - .5) * .015;
+      pos.set([v.x, v.y + .3, v.z], i * 3);
+      rnd[i] = Math.random();
+    }
+    totalPts = N;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('aRnd', new THREE.BufferAttribute(rnd, 1));
+
+    // Shader: pontos abaixo da linha de varredura são "escaneados" (prata),
+    // os da faixa da linha brilham em ciano/violeta, os acima ficam quase invisíveis.
+    const mat = new THREE.ShaderMaterial({
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      uniforms: { uScan: { value: -2 }, uTime: { value: 0 }, uPR: { value: renderer.getPixelRatio() }, uSize: { value: lite ? 2.4 : 2.0 } },
+      vertexShader: `
+        uniform float uScan, uTime, uPR, uSize; attribute float aRnd;
+        varying float vState; varying float vBand; varying float vRnd;
+        void main(){
+          vec3 p = position;
+          float d = p.y - uScan;
+          vBand = smoothstep(.18, 0., abs(d));
+          vState = step(d, 0.);
+          vRnd = aRnd;
+          p += normalize(p + vec3(.0001)) * vBand * .06 * sin(uTime * 6. + aRnd * 20.);
+          vec4 mv = modelViewMatrix * vec4(p, 1.);
+          gl_PointSize = uSize * uPR * (1. + vBand * 1.6) * (6. / -mv.z);
+          gl_Position = projectionMatrix * mv;
+        }`,
+      fragmentShader: `
+        varying float vState; varying float vBand; varying float vRnd;
+        void main(){
+          float r = length(gl_PointCoord - .5);
+          if (r > .5) discard;
+          float soft = smoothstep(.5, .0, r);
+          vec3 silver = vec3(.78, .81, .86);
+          vec3 neon = mix(vec3(0., .94, 1.), vec3(.44, 0., 1.), vRnd);
+          vec3 col = mix(silver * .55, neon, vBand);
+          float a = mix(.06, .55, vState) + vBand * .9;
+          gl_FragColor = vec4(col, a * soft);
+        }`,
+    });
+    const tooth = new THREE.Points(geo, mat);
+    const holder = new THREE.Group(); holder.add(tooth); scene.add(holder);
+
+    // Anel da linha de varredura
+    const ring = new THREE.Mesh(new THREE.RingGeometry(1.75, 1.78, 128), new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: .6, side: THREE.DoubleSide }));
+    ring.rotation.x = Math.PI / 2; holder.add(ring);
+    const disc = new THREE.Mesh(new THREE.CircleGeometry(1.75, 64), new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: .04, side: THREE.DoubleSide }));
+    disc.rotation.x = Math.PI / 2; holder.add(disc);
+
+    const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+    if (Env.finePointer) stage.addEventListener('pointermove', e => { mouse.tx = e.clientX / innerWidth - .5; mouse.ty = e.clientY / innerHeight - .5; });
+
+    const resize = () => {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+      // No desktop o dente fica ao centro entre texto e cards; no mobile vai para o fundo
+      holder.position.x = w >= 1024 ? .6 : 0;
+      holder.scale.setScalar(w >= 1024 ? 1 : .8);
+      canvas.style.opacity = w >= 1024 ? 1 : .45;
+    };
+    resize(); addEventListener('resize', resize);
+
+    let visible = false;
+    new IntersectionObserver(([e]) => visible = e.isIntersecting).observe(stage);
+
+    const clock = new THREE.Clock();
+    let smooth = 0;
+    const loop = () => {
+      requestAnimationFrame(loop);
+      if (!visible) return;
+      const t = clock.getElapsedTime();
+      smooth = lerp(smooth, progress, .08);
+      mouse.x = lerp(mouse.x, mouse.tx, .05); mouse.y = lerp(mouse.y, mouse.ty, .05);
+      const scanY = lerp(-2.1, 1.6, smooth);
+      mat.uniforms.uScan.value = scanY; mat.uniforms.uTime.value = t;
+      ring.position.y = disc.position.y = scanY;
+      ring.material.opacity = .6 * clamp((1 - smooth) * 30, 0, 1); // some ao concluir o escaneamento
+      disc.material.opacity = .04 * clamp((1 - smooth) * 30, 0, 1);
+      holder.rotation.y = smooth * Math.PI * 1.6 + t * .1 + mouse.x * .6;
+      holder.rotation.x = .15 + mouse.y * .3;
+      renderer.render(scene, camera);
+    };
+    loop();
+  }
+
+  /* =============================================================
+     BENTO — tilt 3D + glow de borda por proximidade
+     ============================================================= */
+  function bento() {
+    const cards = $$('.bento-card');
+    if (!Env.finePointer || Env.reduced) return;
+    // Glow por proximidade: atualiza a posição relativa em todos os cards
+    addEventListener('pointermove', e => {
+      cards.forEach(c => {
+        const r = c.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const dx = Math.max(r.left - e.clientX, 0, e.clientX - r.right);
+        const dy = Math.max(r.top - e.clientY, 0, e.clientY - r.bottom);
+        const dist = Math.hypot(dx, dy);
+        c.style.setProperty('--mx', `${x}px`);
+        c.style.setProperty('--my', `${y}px`);
+        c.style.setProperty('--glow', clamp(1 - dist / 180, 0, 1).toFixed(3));
+      });
+    }, { passive: true });
+
+    cards.forEach(c => {
+      c.addEventListener('pointermove', e => {
+        const r = c.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - .5;
+        const py = (e.clientY - r.top) / r.height - .5;
+        const max = r.width > 600 ? 4 : 8; // cards grandes inclinam menos
+        if (Env.hasGSAP) gsap.to(c, { rotateY: px * max, rotateX: -py * max, duration: .6, ease: 'power3.out', transformPerspective: 1200 });
+      });
+      c.addEventListener('pointerleave', () => {
+        if (Env.hasGSAP) gsap.to(c, { rotateY: 0, rotateX: 0, duration: 1, ease: 'elastic.out(1, .5)' });
+      });
+    });
+  }
+
+  /* =============================================================
+     CASOS — SVG procedural de sorriso (antes/depois) + scroll horizontal
+     ============================================================= */
+  const CASES = [
+    { name: 'Marina A.', age: 34, treatment: 'Lentes de contato dental', time: '2 sessões', quote: 'Fiz o planejamento digital, vi meu sorriso antes de começar e o resultado ficou idêntico. Inacreditável.', seed: 3, hue: 0 },
+    { name: 'Ricardo M.', age: 52, treatment: 'Implantes de carga imediata', time: '1 dia', quote: 'Entrei sem dentes e saí no mesmo dia com um sorriso fixo. O conforto durante todo o processo foi absoluto.', seed: 7, hue: 1 },
+    { name: 'Helena C.', age: 41, treatment: 'Estética + harmonização', time: '3 semanas', quote: 'Resultado natural, ninguém percebe que fiz algo — só dizem que pareço descansada e mais feliz.', seed: 11, hue: 2 },
+    { name: 'Paulo R.', age: 29, treatment: 'Clareamento + facetas', time: '10 dias', quote: 'O atendimento parece de outro planeta. Tecnologia impressionante e uma equipe muito humana.', seed: 19, hue: 3 },
+  ];
+
+  // Gera um sorriso estilizado. "after=false" cria dentes amarelados, desalinhados e com espaços.
+  function smileSVG(seed, after, id) {
+    let s = seed;
+    const rand = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+    const widths = [22, 25, 28, 31, 40, 40, 31, 28, 25, 22];
+    const total = widths.reduce((a, b) => a + b, 0);
+    let x = 200 - total / 2;
+    const teethTop = [], teethBot = [];
+    widths.forEach((w, i) => {
+      const center = Math.abs(i - 4.5);
+      const h = 62 - center * 5;
+      const jitterR = after ? 0 : (rand() - .5) * 12;
+      const jitterY = after ? 0 : (rand() - .5) * 7;
+      const gap = after ? 1.2 : 1.2 + rand() * 3.5;
+      teethTop.push(`<rect x="${x + gap / 2}" y="${118 - h + jitterY + center * 2}" width="${w - gap}" height="${h}" rx="${w * .32}" transform="rotate(${jitterR} ${x + w / 2} 118)" fill="url(#t${id})"/>`);
+      if (i > 0 && i < 9) {
+        const bh = 40 - center * 3;
+        const jr = after ? 0 : (rand() - .5) * 10;
+        teethBot.push(`<rect x="${x + 2}" y="${126 + (after ? 0 : rand() * 4)}" width="${w - 4}" height="${bh}" rx="${w * .3}" transform="rotate(${jr} ${x + w / 2} 126)" fill="url(#t${id})" opacity=".85"/>`);
+      }
+      x += w;
+    });
+    const tooth = after ? ['#ffffff', '#E9EEF4', '#C3CBD6'] : ['#EFE3BE', '#D8C48E', '#A8915A'];
+    const bg = after ? ['#0d1a2b', '#050505'] : ['#1a1712', '#050505'];
+    const filt = after ? '' : 'filter="url(#dull' + id + ')"';
+    return `
+      <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <radialGradient id="bg${id}" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="${bg[0]}"/><stop offset="1" stop-color="${bg[1]}"/></radialGradient>
+          <linearGradient id="t${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${tooth[0]}"/><stop offset=".6" stop-color="${tooth[1]}"/><stop offset="1" stop-color="${tooth[2]}"/></linearGradient>
+          <linearGradient id="lip${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a2c35"/><stop offset="1" stop-color="#2a1218"/></linearGradient>
+          <filter id="dull${id}"><feColorMatrix type="saturate" values=".7"/></filter>
+          <clipPath id="mouth${id}"><path d="M70 120 Q200 30 330 120 Q200 215 70 120Z"/></clipPath>
+        </defs>
+        <rect width="400" height="260" fill="url(#bg${id})"/>
+        <g ${filt}>
+          <path d="M60 120 Q200 15 340 120 Q200 230 60 120Z" fill="url(#lip${id})"/>
+          <g clip-path="url(#mouth${id})">
+            <rect x="60" y="40" width="280" height="180" fill="#120709"/>
+            <path d="M70 70 Q200 40 330 70 L330 82 Q200 58 70 82Z" fill="#b5566a" opacity=".8"/>
+            ${teethTop.join('')}${teethBot.join('')}
+            ${after ? '<path d="M120 66 Q200 52 280 66" stroke="#fff" stroke-opacity=".5" stroke-width="3" fill="none"/>' : ''}
+          </g>
+        </g>
+        ${after ? '<circle cx="250" cy="80" r="2" fill="#00F0FF"/><circle cx="150" cy="90" r="1.5" fill="#fff"/>' : ''}
+      </svg>`;
+  }
+
+  function buildCases() {
+    const track = $('#hTrack');
+    track.innerHTML = CASES.map((c, i) => `
+      <article class="case-card glass flex w-[86vw] shrink-0 snap-center flex-col gap-6 rounded-[28px] p-4 sm:w-[560px] sm:p-5 lg:w-[620px]">
+        <div class="compare" data-compare style="--pos:50%" data-cursor-drag>
+          <span class="tag left-3 bg-black/50 text-white/70">Antes</span>
+          <span class="tag right-3 z-[4] bg-white text-black">Depois</span>
+          <div class="before">${smileSVG(c.seed, false, 'b' + i)}</div>
+          <div class="after">${smileSVG(c.seed, true, 'a' + i)}</div>
+          <div class="handle" role="slider" tabindex="0" aria-label="Comparar antes e depois — ${c.name}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <span class="knob glass"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 px-2 pb-2 sm:flex-row sm:items-start sm:justify-between">
+          <blockquote class="max-w-sm text-white/75 leading-relaxed">“${c.quote}”</blockquote>
+          <div class="shrink-0 sm:text-right">
+            <p class="font-display text-lg">${c.name}, ${c.age}</p>
+            <p class="mt-1 font-mono text-[11px] uppercase tracking-[.18em] text-ice/80">${c.treatment}</p>
+            <p class="mt-1 font-mono text-[11px] text-white/40">Tempo: ${c.time}</p>
+          </div>
+        </div>
+      </article>`).join('') + `
+      <div class="flex w-[70vw] shrink-0 snap-center flex-col justify-center gap-6 px-4 sm:w-[420px]">
+        <p class="font-display text-3xl leading-tight sm:text-4xl">+12.000 sorrisos transformados com <span class="text-grad">precisão digital</span>.</p>
+        <a href="#agendar" class="nav-link w-fit text-sm text-white/70 hover:text-white">Comece o seu →</a>
+      </div>`;
+    $('#hTotal').textContent = String(CASES.length).padStart(2, '0');
+
+    // Slider antes/depois — pointer events (mouse + touch)
+    $$('[data-compare]').forEach(el => {
+      const handle = $('.handle', el);
+      let dragging = false;
+      const set = clientX => {
+        const r = el.getBoundingClientRect();
+        const p = clamp((clientX - r.left) / r.width * 100, 0, 100);
+        el.style.setProperty('--pos', p + '%');
+        handle.setAttribute('aria-valuenow', Math.round(p));
+      };
+      el.addEventListener('pointerdown', e => {
+        dragging = true; el.setPointerCapture(e.pointerId); set(e.clientX);
+      });
+      el.addEventListener('pointermove', e => { if (dragging) set(e.clientX); });
+      const end = () => dragging = false;
+      el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+      el.addEventListener('pointerenter', () => Cursor.setDrag(true));
+      el.addEventListener('pointerleave', () => Cursor.setDrag(false));
+      handle.addEventListener('keydown', e => {
+        const cur = parseFloat(el.style.getPropertyValue('--pos')) || 50;
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          const p = clamp(cur + (e.key === 'ArrowLeft' ? -5 : 5), 0, 100);
+          el.style.setProperty('--pos', p + '%'); handle.setAttribute('aria-valuenow', p);
+        }
+      });
+      // Pequena dica de interação quando entra na tela
+      if (motionOK) {
+        const o = { p: 50 };
+        gsap.to(o, { p: 30, duration: .9, ease: 'power2.inOut', yoyo: true, repeat: 1,
+          scrollTrigger: { trigger: el, start: 'top 75%', once: true },
+          onUpdate: () => !dragging && el.style.setProperty('--pos', o.p + '%') });
+      }
+    });
+
+    // Scroll horizontal pinado (desktop). No mobile: rolagem nativa com snap.
+    if (motionOK) {
+      gsap.matchMedia().add('(min-width: 1024px)', () => {
+          const getX = () => -(track.scrollWidth - innerWidth);
+          const tween = gsap.to(track, {
+            x: getX, ease: 'none',
+            scrollTrigger: {
+              trigger: '#hPin', start: 'top top', end: () => '+=' + (track.scrollWidth - innerWidth),
+              pin: true, scrub: 1, invalidateOnRefresh: true,
+              onUpdate: s => $('#hProgress').style.transform = `scaleX(${s.progress})`,
+            },
+          });
+          // Cards ganham leve parallax/escala ao atravessar a tela
+          $$('.case-card', track).forEach(card => {
+            gsap.fromTo(card, { opacity: .35, scale: .92 }, {
+              opacity: 1, scale: 1, ease: 'none',
+              scrollTrigger: { trigger: card, containerAnimation: tween, start: 'left 95%', end: 'left 45%', scrub: true },
+            });
+          });
+          return () => gsap.set(track, { clearProps: 'x' });
+      });
+    }
+  }
+
+  /* =============================================================
+     REVEALS GENÉRICOS
+     ============================================================= */
+  function reveals() {
+    if (!motionOK) return;
+    ScrollTrigger.batch('.reveal', {
+      start: 'top 88%',
+      onEnter: els => gsap.to(els, { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', stagger: .08, overwrite: true }),
+    });
+  }
+
+  /* =============================================================
+     FORMULÁRIO — validação leve + feedback
+     ============================================================= */
+  function form() {
+    const f = $('#bookingForm'), msg = $('#formMsg'), label = $('#submitLabel');
+    const sel = $('#f-period');
+    sel.addEventListener('change', () => sel.classList.toggle('filled', !!sel.value));
+    f.addEventListener('submit', e => {
+      e.preventDefault();
+      const invalid = [...f.querySelectorAll('[required]')].find(i => !i.checkValidity());
+      msg.classList.remove('hidden');
+      if (invalid) {
+        msg.textContent = 'Preencha todos os campos para continuar.'; msg.className = 'mt-6 text-sm text-rose-300';
+        invalid.focus(); return;
+      }
+      label.textContent = 'Enviando…';
+      // TODO: integrar com backend/CRM (fetch POST) ou link de WhatsApp
+      setTimeout(() => {
+        label.textContent = 'Solicitação enviada ✓';
+        msg.className = 'mt-6 text-sm text-ice';
+        msg.textContent = `Obrigado, ${f.name.value.split(' ')[0]}! Nosso concierge entrará em contato em breve.`;
+        f.reset(); sel.classList.remove('filled');
+      }, 900);
+    });
+  }
+
+  /* =============================================================
+     PRELOADER → inicialização
+     ============================================================= */
+  function boot() {
+    // Ordem importa: os pins do ScrollTrigger devem ser criados na ordem do DOM
+    createHero3D();
+    createScan3D();
+    buildCases();
+    bento();
+    form();
+    reveals();
+
+    const loader = $('#loader'), fill = $('#loader .bar i'), pct = $('#loaderPct');
+    const done = () => { heroIntro(); if (Env.hasGSAP) ScrollTrigger.refresh(); };
+
+    if (!motionOK) { loader.remove(); done(); return; }
+    lenis?.stop();
+    const o = { v: 0 };
+    gsap.timeline()
+      .to(o, { v: 100, duration: 1.4, ease: 'power2.inOut', onUpdate: () => { fill.style.width = o.v + '%'; pct.textContent = String(Math.round(o.v)).padStart(3, '0'); } })
+      .to(loader, { yPercent: -100, duration: 1, ease: 'expo.inOut', onStart: done, onComplete: () => { loader.remove(); lenis?.start(); } });
+  }
+
+  if (document.readyState === 'complete') boot();
+  else addEventListener('load', boot);
+})();
+</script>
+</body>
+</html>
