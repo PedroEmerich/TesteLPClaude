@@ -1,6 +1,6 @@
-# Aether Clinic — Landing page (Cyber-Luxury / Bio-Tech)
+# Aether Odontologia — Landing page (tema claro)
 
-Landing page de alto padrão para uma clínica odontológica e de estética avançada, em **um único arquivo HTML**.
+Landing page de alto padrão para uma clínica odontológica e de estética, com foco em odontologia.
 
 ## Como rodar
 Abra `index.html` no navegador (precisa de internet para as CDNs) ou sirva a pasta:
@@ -9,28 +9,36 @@ Abra `index.html` no navegador (precisa de internet para as CDNs) ou sirva a pas
 npx serve .
 ```
 
-## Stack (via CDN)
-- Tailwind CSS (Play CDN) + CSS customizado com tokens em `:root`
-- GSAP 3.12 + ScrollTrigger: entrada do título caractere a caractere, pins, scrub, scroll horizontal
-- Lenis: smooth scroll integrado ao ScrollTrigger
-- Three.js r128: objetos cromados flutuantes no hero e nuvem de pontos de um molar com linha de escaneamento (shader)
+## Estrutura
+```
+index.html              página (HTML + Tailwind + CSS + JS das interações)
+js/teeth.js             modelos 3D procedurais (molar, incisivos, arcada, implante) em Three.js
+assets/img/             imagens renderizadas a partir dos modelos (sorriso, implante, casos antes/depois)
+tools/render-assets.*   gera de novo as imagens de assets/img
+```
 
 ## Seções
-1. **Hero**: título com split por caractere, palavra dinâmica, CTA magnético com borda luminosa, vídeo de fundo + 3D
-2. **O futuro da odontologia**: spotlight que segue o cursor, modelo 3D escaneado conforme o scroll, cards que surgem pelo progresso
-3. **Bento grid**: tilt 3D e borda em gradiente que acende conforme a proximidade do cursor
-4. **Casos**: scroll horizontal pinado (desktop) / carrossel com snap (mobile), slider antes/depois (mouse, touch e teclado)
-5. **Agendamento + rodapé**: formulário minimalista com labels flutuantes, status de agenda, redes com micro-interações
+1. **Hero**: título com entrada caractere a caractere, palavra dinâmica, CTA magnético, dentes 3D flutuando
+2. **Diagnóstico** (texto à esquerda, dente com cárie, fratura, manchas e tártaro à direita, com rótulos)
+3. **Tratamento** (ao rolar, o dente gira, fica saudável e passa para a esquerda; texto à direita).
+   As duas seções compartilham um palco 3D fixo (`position: sticky`); a linha do tempo está em `createJourney()`.
+4. **Tratamentos** em bento grid com tilt 3D e borda luminosa
+5. **Resultados**: scroll horizontal (desktop) / carrossel (mobile) com comparador antes/depois
+6. **Agendamento + rodapé**
 
-## Personalização
-- **Vídeo de fundo**: coloque `assets/hero.mp4` (8–15s, ~3–5MB). Sem o arquivo, fica o fundo animado.
-- **Casos/depoimentos**: array `CASES` no script. Os sorrisos são SVGs ilustrativos gerados por código; troque por fotos reais
-  colocando `<img>` nas divs `.before` / `.after`.
-- **Modelo 3D real**: substitua a geometria procedural em `createScan3D()` por um GLB (GLTFLoader) ou um embed do Spline.
-- **Formulário**: o envio é simulado; integre no `TODO` de `form()` (fetch para CRM ou link de WhatsApp).
+## Imagens
+As imagens são renderizações 3D ilustrativas. Para trocar por fotos reais da clínica, substitua os arquivos em
+`assets/img/` (mesmos nomes) ou edite os `src` no HTML e o array `CASES` no script.
+Para gerar as renderizações de novo:
+
+```bash
+npm i -D playwright
+node tools/render-assets.cjs
+```
+
+Vídeo de fundo opcional no hero: `assets/hero.mp4`.
 
 ## Performance e acessibilidade
-- Mobile (< 1024px): sem cursor customizado, sem pins, menos partículas/pontos, pixel ratio 1
-- Renderização 3D pausa fora da tela (IntersectionObserver)
-- `prefers-reduced-motion`: animações desligadas, conteúdo sempre visível
-- Sem as CDNs de animação, a página continua legível (as animações só são ativadas se o GSAP carregar)
+- Mobile (< 1024px): sem cursor customizado, sem pin no scroll horizontal, modelos com menos polígonos
+- Cenas 3D pausam fora da tela; sem WebGL, a jornada do dente usa as imagens `molar-antes.png` / `molar.png`
+- `prefers-reduced-motion` respeitado; sem as CDNs de animação o conteúdo continua visível

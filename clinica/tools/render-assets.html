@@ -1,0 +1,67 @@
+<!doctype html>
+<!--
+  Gera as imagens de assets/img a partir dos modelos de js/teeth.js.
+  Uso: node tools/render-assets.cjs   (abre esta página no Chromium e salva cada imagem)
+  Parâmetros: ?asset=molar|implant|veneer|smile|case-antes|case-depois&seed=1&w=800&h=800
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../js/teeth.js"></script>
+<script>
+  const q = new URLSearchParams(location.search);
+  const asset = q.get('asset') || 'molar', seed = +(q.get('seed') || 1);
+  const W = +(q.get('w') || 800), H = +(q.get('h') || 800);
+  const canvas = document.getElementById('c');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(1); renderer.setSize(W, H);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(28, W / H, .1, 100);
+  Teeth.studioEnvironment(renderer, scene);
+
+  // Fundo de estúdio (somente nos casos antes/depois, salvos em JPG)
+  const studioBg = () => {
+    const cv = document.createElement('canvas'); cv.width = 512; cv.height = 512;
+    const g = cv.getContext('2d');
+    const r = g.createRadialGradient(256, 200, 20, 256, 256, 420);
+    r.addColorStop(0, '#FBFCFD'); r.addColorStop(1, '#DCE4EA');
+    g.fillStyle = r; g.fillRect(0, 0, 512, 512);
+    scene.background = new THREE.CanvasTexture(cv);
+  };
+
+  let obj;
+  switch (asset) {
+    case 'molar': {
+      const t = Teeth.buildMolar({ detail: 1.2 }); t.setState(1); obj = t.group;
+      obj.rotation.set(.35, -.6, .08); camera.position.set(0, 0, 7.4); break;
+    }
+    case 'molar-antes': {
+      const t = Teeth.buildMolar({ detail: 1.2 }); t.setState(0); obj = t.group;
+      obj.rotation.set(.45, -.5, .08); camera.position.set(0, 0, 7.4); break;
+    }
+    case 'implant':
+      obj = Teeth.buildImplant(); obj.rotation.set(.12, -.5, -.1); camera.position.set(0, 0, 9.6); break;
+    case 'veneer':
+      obj = Teeth.buildVeneer(); obj.rotation.set(.06, -.25, 0); obj.position.x = -.25; camera.position.set(0, 0, 8.4); break;
+    case 'smile':
+      studioBg();
+      obj = Teeth.buildArch({ ugly: false, seed: 3 }); obj.rotation.x = .06; camera.position.set(0, -.05, 6.6); break;
+    case 'case-antes':
+    case 'case-depois':
+      studioBg();
+      obj = Teeth.buildArch({ ugly: asset === 'case-antes', seed });
+      obj.rotation.set(.06 + (seed % 3) * .03, (seed % 2 ? -1 : 1) * .12, 0);
+      camera.position.set(0, -.05, 7.2); break;
+  }
+  scene.add(obj);
+  camera.lookAt(0, asset.startsWith('case') || asset === 'smile' ? 0 : .1, 0);
+  renderer.render(scene, camera);
+  window.__done = true;
+</script>
+</body>
+</html>
