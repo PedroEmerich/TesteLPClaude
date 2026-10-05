@@ -1,6 +1,6 @@
-# Aether Odontologia — Landing page (tema claro)
+# Odontoral Prime — Landing page
 
-Landing page de alto padrão para uma clínica odontológica e de estética, com foco em odontologia.
+Landing page da Clínica Odontoral Prime (Mogi das Cruzes - SP). Identidade: azul-marinho #12355B + dourado #C9A45C, logo com dente e coroa ("Prime").
 
 ## Como rodar
 Abra `index.html` no navegador (precisa de internet para as CDNs) ou sirva a pasta:

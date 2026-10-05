@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Aether Odontologia — Sorrisos saudáveis e naturais</title>
-<meta name="description" content="Odontologia de excelência e estética avançada: implantes, lentes de contato dental, clareamento e harmonização orofacial com planejamento digital e conforto absoluto.">
-<meta name="theme-color" content="#F6F8FA">
+<title>Odontoral Prime — Implantes e Estética Dental em Mogi das Cruzes</title>
+<meta name="description" content="Clínica Odontoral Prime, em Mogi das Cruzes: implantes dentários, lentes de contato, estética, reabilitação oral e odontologia do sono. Tradição Odontoral desde 1986.">
+<meta name="theme-color" content="#12355B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 40 40%27%3E%3Ccircle cx=%2720%27 cy=%2720%27 r=%2719%27 fill=%27%2312355B%27/%3E%3Cpath d=%27M20 12.2c-2.1-1.5-6-1.4-7 1.5-.9 2.5.4 4.6 1.1 6.8.6 2.1.7 6.2 2.5 6.8 1.6.6 1.7-3.9 3.4-3.9s1.8 4.5 3.4 3.9c1.8-.6 1.9-4.7 2.5-6.8.7-2.2 2-4.3 1.1-6.8-1-2.9-4.9-3-7-1.5z%27 fill=%27none%27 stroke=%27white%27 stroke-width=%271.6%27/%3E%3C/svg%3E">
 
 <!-- Fontes -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,14 +20,15 @@
     theme: {
       extend: {
         colors: {
-          ink: '#0D1B2A',
+          ink: '#0E1E33',
           slate2: '#4A5868',
           paper: '#FFFFFF',
           mist: '#F6F8FA',
           pearl: '#EEF2F5',
-          aqua: '#12A9BC',
-          deep: '#2F5BEA',
-          mint: '#E5F5F6',
+          aqua: '#9C7A33',      /* dourado Prime (texto/realces) */
+          deep: '#12355B',      /* azul-marinho Prime */
+          gold: '#C9A45C',
+          mint: '#F4EFE4',
           blush: '#F6E9E4',
         },
         fontFamily: {
@@ -60,9 +62,10 @@
     --muted: #4A5868;
     --line: rgba(13, 27, 42, .08);
     --line-strong: rgba(13, 27, 42, .16);
-    --aqua: #12A9BC;
-    --deep: #2F5BEA;
-    --grad: linear-gradient(120deg, #12A9BC, #2F5BEA);
+    --aqua: #9C7A33;
+    --gold: #C9A45C;
+    --deep: #12355B;
+    --grad: linear-gradient(120deg, #B8913F, #12355B);
     --ease-out: cubic-bezier(.16, 1, .3, 1);
   }
 
@@ -107,7 +110,7 @@
     transition: width .35s var(--ease-out), height .35s var(--ease-out), margin .35s var(--ease-out), background .35s, border-color .35s;
   }
   .cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--ink); }
-  .cursor.is-hover { width: 70px; height: 70px; margin: -35px 0 0 -35px; background: rgba(18,169,188,.12); border-color: rgba(18,169,188,.5); }
+  .cursor.is-hover { width: 70px; height: 70px; margin: -35px 0 0 -35px; background: rgba(184,145,63,.12); border-color: rgba(184,145,63,.5); }
   .cursor.is-drag { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: rgba(255,255,255,.7); border-color: var(--aqua); }
   .cursor .label { position: absolute; inset: 0; display: grid; place-items: center; font: 600 9px/1 "Plus Jakarta Sans"; letter-spacing: .2em; text-transform: uppercase; color: var(--ink); opacity: 0; transition: opacity .2s; }
   .cursor.is-drag .label { opacity: 1; }
@@ -119,8 +122,8 @@
   .hero-bg {
     position: absolute; inset: -10%;
     background:
-      radial-gradient(38% 42% at 78% 38%, rgba(18,169,188,.16), transparent 70%),
-      radial-gradient(30% 35% at 92% 80%, rgba(47,91,234,.10), transparent 70%),
+      radial-gradient(38% 42% at 78% 38%, rgba(184,145,63,.16), transparent 70%),
+      radial-gradient(30% 35% at 92% 80%, rgba(18,53,91,.10), transparent 70%),
       radial-gradient(40% 40% at 10% 90%, rgba(246,233,228,.9), transparent 70%),
       linear-gradient(180deg, #FFFFFF, #F6F8FA);
     animation: drift 20s ease-in-out infinite alternate;
@@ -139,7 +142,7 @@
   }
   .btn-magnetic::before {
     content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1.5px; z-index: -1;
-    background: conic-gradient(from var(--angle, 0deg), transparent 0 60%, #7FE3EE 75%, #2F5BEA 88%, transparent 100%);
+    background: conic-gradient(from var(--angle, 0deg), transparent 0 60%, #E8D29C 75%, #C9A45C 88%, transparent 100%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
     animation: spinBorder 4s linear infinite;
@@ -193,14 +196,14 @@
   }
   .bento-card::before {
     content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; z-index: 4;
-    background: radial-gradient(360px circle at var(--mx) var(--my), #12A9BC, #2F5BEA 45%, transparent 70%);
+    background: radial-gradient(360px circle at var(--mx) var(--my), #C9A45C, #12355B 45%, transparent 70%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
     opacity: var(--glow); transition: opacity .4s;
   }
   .bento-card::after {
     content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 3;
-    background: radial-gradient(500px circle at var(--mx) var(--my), rgba(18,169,188,.07), transparent 50%);
+    background: radial-gradient(500px circle at var(--mx) var(--my), rgba(184,145,63,.07), transparent 50%);
   }
   .bento-card > * { position: relative; z-index: 2; }
   .bento-card .lift { transform: translateZ(36px); }
@@ -220,7 +223,7 @@
   }
   .shade-tab:hover img, .shade-tab.is-active img, .shade-tab:focus-visible img { transform: translateY(-10%) rotate(-3deg) scale(1.04); filter: drop-shadow(0 18px 14px rgba(13,27,42,.22)); }
   .shade-tab:hover .lbl, .shade-tab.is-active .lbl, .shade-tab:focus-visible .lbl { transform: translateY(-10%); }
-  .shade-tab.is-active { background: linear-gradient(180deg, rgba(18,169,188,0), rgba(18,169,188,.10)); }
+  .shade-tab.is-active { background: linear-gradient(180deg, rgba(184,145,63,0), rgba(184,145,63,.10)); }
   .shade-tab.is-active::after { content: ""; position: absolute; left: 30%; right: 30%; bottom: 0; height: 3px; border-radius: 3px; background: var(--grad); }
 
   /* =========================================================
@@ -289,7 +292,14 @@
 
 <div id="loader" aria-hidden="true">
   <div class="flex flex-col items-center gap-5">
-    <div class="text-xl font-bold tracking-[.4em]">AETHER</div>
+    <div class="flex items-center gap-3"><svg width="44" height="44" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" fill="#12355B"/>
+        <path d="M20 12.2c-2.1-1.5-6-1.4-7 1.5-.9 2.5.4 4.6 1.1 6.8.6 2.1.7 6.2 2.5 6.8 1.6.6 1.7-3.9 3.4-3.9s1.8 4.5 3.4 3.9c1.8-.6 1.9-4.7 2.5-6.8.7-2.2 2-4.3 1.1-6.8-1-2.9-4.9-3-7-1.5z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M14.5 9.4l2.2 1.6L20 7.6l3.3 3.4 2.2-1.6" stroke="#C9A45C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><span class="flex flex-col leading-none">
+        <span class="text-[15px] font-extrabold tracking-[.16em] text-deep">ODONTORAL</span>
+        <span class="mt-1 text-[9px] font-bold tracking-[.62em] text-aqua">PRIME</span>
+      </span></div>
     <div class="bar"><i></i></div>
   </div>
 </div>
@@ -302,21 +312,25 @@
      ========================================================= -->
 <header id="nav" class="fixed inset-x-0 top-0 z-50 transition-all duration-500">
   <div class="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-4 sm:px-8">
-    <a href="#top" class="flex items-center gap-3" aria-label="Aether Odontologia — início">
-      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <path d="M16 5c-3-2.2-8.5-2-10 2.2-1.3 3.6.6 6.6 1.6 9.8.9 3 1 8.9 3.6 9.8 2.3.8 2.4-5.6 4.8-5.6s2.5 6.4 4.8 5.6c2.6-.9 2.7-6.8 3.6-9.8 1-3.2 2.9-6.2 1.6-9.8C24.5 3 19 2.8 16 5z" stroke="url(#lg)" stroke-width="1.6" stroke-linejoin="round"/>
-        <defs><linearGradient id="lg" x1="4" y1="3" x2="28" y2="28"><stop stop-color="#12A9BC"/><stop offset="1" stop-color="#2F5BEA"/></linearGradient></defs>
+    <a href="#top" class="flex items-center gap-3" aria-label="Odontoral Prime — início">
+      <svg width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" fill="#12355B"/>
+        <path d="M20 12.2c-2.1-1.5-6-1.4-7 1.5-.9 2.5.4 4.6 1.1 6.8.6 2.1.7 6.2 2.5 6.8 1.6.6 1.7-3.9 3.4-3.9s1.8 4.5 3.4 3.9c1.8-.6 1.9-4.7 2.5-6.8.7-2.2 2-4.3 1.1-6.8-1-2.9-4.9-3-7-1.5z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M14.5 9.4l2.2 1.6L20 7.6l3.3 3.4 2.2-1.6" stroke="#C9A45C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <span class="text-sm font-bold tracking-[.32em]">AETHER</span>
+      <span class="flex flex-col leading-none">
+        <span class="text-[15px] font-extrabold tracking-[.16em] text-deep">ODONTORAL</span>
+        <span class="mt-1 text-[9px] font-bold tracking-[.62em] text-aqua">PRIME</span>
+      </span>
     </a>
     <nav class="hidden items-center gap-9 text-sm font-medium text-slate2 md:flex" aria-label="Principal">
-      <a class="nav-link hover:text-ink" href="#diagnostico">Cuidado</a>
+      <a class="nav-link hover:text-ink" href="#diagnostico">A clínica</a>
       <a class="nav-link hover:text-ink" href="#tratamentos">Tratamentos</a>
       <a class="nav-link hover:text-ink" href="#casos">Resultados</a>
       <a class="nav-link hover:text-ink" href="#agendar">Contato</a>
     </nav>
     <a href="#agendar" data-cursor="hover" class="hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white sm:inline-flex">
-      <span class="h-1.5 w-1.5 rounded-full bg-[#7FE3EE] animate-pulseDot"></span> Agendar avaliação
+      <span class="h-1.5 w-1.5 rounded-full bg-[#E8D29C] animate-pulseDot"></span> Agendar avaliação
     </a>
     <button id="menuBtn" class="glass rounded-full p-3 md:hidden" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 16h16"/></svg>
@@ -324,7 +338,7 @@
   </div>
   <div id="mobileMenu" class="glass mx-4 hidden rounded-3xl p-6 md:hidden">
     <nav class="flex flex-col gap-5 text-2xl font-semibold" aria-label="Menu mobile">
-      <a href="#diagnostico">Cuidado</a>
+      <a href="#diagnostico">A clínica</a>
       <a href="#tratamentos">Tratamentos</a>
       <a href="#casos">Resultados</a>
       <a href="#agendar" class="text-grad">Agendar avaliação</a>
@@ -349,12 +363,8 @@
 
     <div class="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-16 pt-32 sm:px-8">
       <div class="hero-fade glass mb-8 inline-flex items-center gap-3 rounded-full px-4 py-2">
-        <span class="flex -space-x-1.5" aria-hidden="true">
-          <span class="h-5 w-5 rounded-full border-2 border-white bg-[#E9C9B5]"></span>
-          <span class="h-5 w-5 rounded-full border-2 border-white bg-[#B98E74]"></span>
-          <span class="h-5 w-5 rounded-full border-2 border-white bg-[#7A5643]"></span>
-        </span>
-        <span class="text-xs font-semibold text-slate2">★ 4,9 · mais de 12 mil sorrisos transformados</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9l4 3 4-6 4 6 4-3-2 9H6L4 9z" stroke="#C9A45C" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span class="text-xs font-semibold text-slate2">Pioneira em implantes em Mogi das Cruzes · desde 1986</span>
       </div>
 
       <h1 id="heroTitle" class="max-w-[13ch] text-[clamp(2.8rem,8.2vw,8.4rem)] font-bold leading-[.95] tracking-tightest">
@@ -365,8 +375,8 @@
 
       <div class="mt-10 grid gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
         <p class="hero-fade max-w-xl text-lg leading-relaxed text-slate2">
-          Odontologia de excelência com <span id="dynamicWord" class="inline-block font-semibold text-ink">especialistas dedicados</span>.
-          Do check-up ao sorriso dos sonhos, cuidamos da sua saúde bucal com precisão, delicadeza e conforto absoluto.
+          Implantes, estética e reabilitação oral com <span id="dynamicWord" class="inline-block font-semibold text-ink">quase 40 anos de experiência</span>.
+          A tradição da Odontoral, agora em uma estrutura nova e moderna no centro de Mogi das Cruzes.
         </p>
         <div class="hero-fade flex flex-wrap items-center gap-6">
           <a href="#agendar" class="btn-magnetic" data-magnetic data-cursor="hover">
@@ -379,9 +389,9 @@
       </div>
 
       <dl class="hero-fade mt-16 grid max-w-3xl grid-cols-3 gap-6 border-t border-ink/10 pt-8">
-        <div><dt class="text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Anos de cuidado</dt><dd class="mt-2 text-2xl font-bold sm:text-4xl"><span data-count="18">0</span></dd></div>
-        <div><dt class="text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Sorrisos</dt><dd class="mt-2 text-2xl font-bold sm:text-4xl"><span data-count="12">0</span><span class="text-aqua">k+</span></dd></div>
-        <div><dt class="text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Especialistas</dt><dd class="mt-2 text-2xl font-bold sm:text-4xl"><span data-count="14">0</span></dd></div>
+        <div><dt class="text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Desde</dt><dd class="mt-2 text-2xl font-bold sm:text-4xl">1986</dd></div>
+        <div><dt class="text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Implantes</dt><dd class="mt-2 text-2xl font-bold sm:text-4xl">Pioneira<span class="text-aqua">.</span></dd></div>
+        <div><dt class="text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Certificação</dt><dd class="mt-2 text-2xl font-bold sm:text-4xl">AIOI<span class="text-aqua">*</span></dd></div>
       </dl>
     </div>
 
@@ -394,8 +404,8 @@
   <!-- Faixa de especialidades -->
   <div class="relative overflow-hidden border-y border-ink/5 bg-paper py-5" aria-hidden="true">
     <div class="flex w-max animate-marquee gap-12 whitespace-nowrap text-sm font-semibold uppercase tracking-[.22em] text-slate2/60">
-      <span>Clareamento</span><span class="text-aqua">✦</span><span>Implantes</span><span class="text-aqua">✦</span><span>Lentes de contato</span><span class="text-aqua">✦</span><span>Ortodontia invisível</span><span class="text-aqua">✦</span><span>Periodontia</span><span class="text-aqua">✦</span><span>Odontopediatria</span><span class="text-aqua">✦</span><span>Harmonização orofacial</span><span class="text-aqua">✦</span>
-      <span>Clareamento</span><span class="text-aqua">✦</span><span>Implantes</span><span class="text-aqua">✦</span><span>Lentes de contato</span><span class="text-aqua">✦</span><span>Ortodontia invisível</span><span class="text-aqua">✦</span><span>Periodontia</span><span class="text-aqua">✦</span><span>Odontopediatria</span><span class="text-aqua">✦</span><span>Harmonização orofacial</span><span class="text-aqua">✦</span>
+      <span>Clareamento</span><span class="text-aqua">✦</span><span>Implantes</span><span class="text-aqua">✦</span><span>Lentes de contato</span><span class="text-aqua">✦</span><span>Reabilitação oral</span><span class="text-aqua">✦</span><span>Odontologia do sono</span><span class="text-aqua">✦</span><span>Odontologia digital</span><span class="text-aqua">✦</span><span>Próteses</span><span class="text-aqua">✦</span>
+      <span>Clareamento</span><span class="text-aqua">✦</span><span>Implantes</span><span class="text-aqua">✦</span><span>Lentes de contato</span><span class="text-aqua">✦</span><span>Reabilitação oral</span><span class="text-aqua">✦</span><span>Odontologia do sono</span><span class="text-aqua">✦</span><span>Odontologia digital</span><span class="text-aqua">✦</span><span>Próteses</span><span class="text-aqua">✦</span>
     </div>
   </div>
 
@@ -424,7 +434,7 @@
       <div id="sparkles" class="absolute left-0 top-0 opacity-0">
         <svg class="sparkle animate-twinkle" style="left:60px;top:-170px" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
         <svg class="sparkle animate-twinkle" style="left:-150px;top:-110px;width:14px;height:14px;animation-delay:.8s" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
-        <svg class="sparkle animate-twinkle" style="left:130px;top:-50px;width:16px;height:16px;animation-delay:1.4s;color:#2F5BEA" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
+        <svg class="sparkle animate-twinkle" style="left:130px;top:-50px;width:16px;height:16px;animation-delay:1.4s;color:#12355B" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
       </div>
 
       <!-- Indicador de estado sob o dente -->
@@ -495,7 +505,7 @@
           Especialidades para<br>cada <span class="serif-accent text-aqua">sorriso.</span>
         </h2>
       </div>
-      <p class="reveal max-w-sm text-slate2">Uma equipe multidisciplinar sob o mesmo teto, com protocolos personalizados para a sua história.</p>
+      <p class="reveal max-w-sm text-slate2">Equipe integrada de especialistas para um tratamento completo e seguro, do diagnóstico à manutenção.</p>
     </div>
 
     <div class="bento grid auto-rows-[minmax(280px,auto)] grid-cols-1 gap-4 md:grid-cols-6 lg:grid-cols-12">
@@ -522,28 +532,26 @@
         <span class="lift text-xs font-bold text-aqua">02</span>
         <div class="lift max-w-[62%]">
           <h3 class="text-2xl font-bold tracking-tight sm:text-3xl">Implantes de Carga Imediata</h3>
-          <p class="mt-3 text-sm text-slate2">Dentes fixos em até 24h, com cirurgia guiada e recuperação tranquila.</p>
+          <p class="mt-3 text-sm text-slate2">Pioneira em implantes em Mogi das Cruzes desde 1986: planejamento digital e cirurgia segura.</p>
         </div>
       </article>
 
-      <!-- Harmonização -->
-      <article class="bento-card reveal flex flex-col justify-between gap-6 bg-gradient-to-br from-blush/70 to-paper p-8 sm:flex-row sm:items-end md:col-span-3 lg:col-span-5">
+      <!-- Odontologia do sono -->
+      <article class="bento-card reveal flex flex-col justify-between gap-6 p-8 text-white sm:flex-row sm:items-end md:col-span-3 lg:col-span-5" style="background:linear-gradient(150deg,#12355B,#0B2140)">
         <div class="lift max-w-md">
-          <span class="text-xs font-bold text-aqua">03</span>
-          <h3 class="mt-6 text-2xl font-bold tracking-tight sm:text-3xl">Harmonização Orofacial</h3>
-          <p class="mt-3 text-sm text-slate2">Equilíbrio entre sorriso e rosto: preenchimento labial, toxina botulínica e bioestimuladores com naturalidade.</p>
+          <span class="text-xs font-bold text-gold">03</span>
+          <h3 class="mt-6 text-2xl font-bold tracking-tight sm:text-3xl">Odontologia do Sono</h3>
+          <p class="mt-3 text-sm text-white/70">Tratamento do ronco e da apneia do sono com aparelhos intraorais e exame de polissonografia.</p>
         </div>
-        <svg viewBox="0 0 160 200" class="lift h-36 w-auto shrink-0 self-center" aria-hidden="true">
-          <g fill="none" stroke="#0D1B2A" stroke-width="1.1" stroke-opacity=".55" stroke-linecap="round">
-            <path d="M80 12c33 0 52 28 52 66 0 48-24 96-52 108-28-12-52-60-52-108 0-38 19-66 52-66z"/>
-            <path d="M56 84c5-4 12-4 17 0M87 84c5-4 12-4 17 0"/>
-            <path d="M80 92v26c0 4-4 6-8 6"/>
-            <path d="M62 146c10 8 26 8 36 0" stroke="#C26A6A" stroke-opacity=".9" stroke-width="1.6"/>
+        <svg viewBox="0 0 160 160" class="lift h-32 w-auto shrink-0 self-center" aria-hidden="true">
+          <path d="M104 26a54 54 0 1 0 30 88A46 46 0 0 1 104 26z" fill="none" stroke="#C9A45C" stroke-width="1.6"/>
+          <g fill="#C9A45C"><circle cx="122" cy="40" r="2.5"/><circle cx="138" cy="62" r="1.6"/><circle cx="112" cy="20" r="1.6"/></g>
+          <g fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.4" stroke-linecap="round">
+            <path d="M40 132c10-8 20-8 30 0s20 8 30 0 20-8 30 0"/>
+            <path d="M48 146c8-6 16-6 24 0s16 6 24 0 16-6 24 0" stroke-opacity=".3"/>
           </g>
-          <g fill="none" stroke="#12A9BC" stroke-opacity=".6" stroke-dasharray="2 4">
-            <path d="M80 8v186M24 84h112M30 146h100"/>
-          </g>
-          <g fill="#12A9BC"><circle cx="80" cy="12" r="2.5"/><circle cx="28" cy="84" r="2.5"/><circle cx="132" cy="84" r="2.5"/><circle cx="80" cy="186" r="2.5"/></g>
+          <text x="58" y="66" fill="#fff" fill-opacity=".8" font-family="Plus Jakarta Sans" font-weight="700" font-size="16">z</text>
+          <text x="70" y="52" fill="#fff" fill-opacity=".6" font-family="Plus Jakarta Sans" font-weight="700" font-size="12">z</text>
         </svg>
       </article>
 
@@ -572,7 +580,7 @@
       </article>
 
       <!-- CTA -->
-      <a href="#agendar" data-cursor="hover" class="bento-card reveal group flex flex-col justify-between gap-10 p-8 text-white md:col-span-6 lg:col-span-4" style="background:linear-gradient(140deg,#12A9BC,#2F5BEA)">
+      <a href="#agendar" data-cursor="hover" class="bento-card reveal group flex flex-col justify-between gap-10 p-8 text-white md:col-span-6 lg:col-span-4" style="background:linear-gradient(140deg,#1B4674,#0E2847)">
         <span class="lift text-[11px] font-semibold uppercase tracking-[.2em] text-white/80">Primeira consulta</span>
         <div class="lift flex items-end justify-between gap-4">
           <p class="text-2xl font-bold leading-tight">Descubra o tratamento ideal para você.</p>
@@ -615,7 +623,7 @@
        6. AGENDAMENTO + RODAPÉ
        ========================================================= -->
   <section id="agendar" class="relative overflow-hidden bg-gradient-to-b from-mist to-mint/60">
-    <div class="pointer-events-none absolute -right-40 -top-40 h-[560px] w-[560px] rounded-full opacity-60 blur-[100px]" style="background:radial-gradient(closest-side,#BFEAF0,transparent)" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -right-40 -top-40 h-[560px] w-[560px] rounded-full opacity-60 blur-[100px]" style="background:radial-gradient(closest-side,#EADBB8,transparent)" aria-hidden="true"></div>
 
     <div class="relative mx-auto grid max-w-[1440px] gap-16 px-4 py-28 sm:px-8 sm:py-36 lg:grid-cols-12">
       <div class="lg:col-span-5">
@@ -629,9 +637,9 @@
         <p class="reveal mt-8 max-w-md text-slate2">Consulta de avaliação completa em 60 minutos: exame clínico, radiografia digital, fotos do sorriso e um plano de tratamento claro, com valores e prazos.</p>
 
         <dl class="reveal mt-12 space-y-6 text-sm">
-          <div class="flex gap-6"><dt class="w-24 shrink-0 pt-0.5 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Endereço</dt><dd>Av. Brigadeiro Faria Lima, 4500 — 21º andar<br>Itaim Bibi, São Paulo</dd></div>
-          <div class="flex gap-6"><dt class="w-24 shrink-0 pt-0.5 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Horário</dt><dd>Seg–Sex 8h–20h · Sáb 9h–14h</dd></div>
-          <div class="flex gap-6"><dt class="w-24 shrink-0 pt-0.5 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Atendimento</dt><dd><a href="tel:+5511900000000" class="hover:text-aqua">+55 11 90000-0000</a></dd></div>
+          <div class="flex gap-6"><dt class="w-24 shrink-0 pt-0.5 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Endereço</dt><dd>Rua Engenheiro Eugênio Motta, 185 — Centro<br>Mogi das Cruzes — SP · 08730-120</dd></div>
+          <div class="flex gap-6"><dt class="w-24 shrink-0 pt-0.5 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Horário</dt><dd>Consulte os horários pelo WhatsApp</dd></div>
+          <div class="flex gap-6"><dt class="w-24 shrink-0 pt-0.5 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Atendimento</dt><dd><a href="tel:+551147248080" class="hover:text-aqua">(11) 4724-8080</a><br><a href="https://wa.me/5511972193918" target="_blank" rel="noopener" class="hover:text-aqua">WhatsApp (11) 97219-3918</a></dd></div>
         </dl>
       </div>
 
@@ -682,8 +690,8 @@
       <div class="map-card card-soft reveal relative overflow-hidden rounded-[32px] lg:col-span-12">
         <iframe
           class="map-frame block h-[300px] w-full bg-pearl sm:h-[440px]"
-          src="https://www.google.com/maps?q=Av.+Brigadeiro+Faria+Lima,+4500,+Itaim+Bibi,+S%C3%A3o+Paulo+-+SP&z=16&output=embed"
-          title="Mapa com a localização da clínica Aether"
+          src="https://www.google.com/maps?q=Rua+Engenheiro+Eug%C3%AAnio+Motta,+185,+Centro,+Mogi+das+Cruzes+-+SP,+08730-120&z=16&output=embed"
+          title="Mapa com a localização da Clínica Odontoral Prime"
           loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         <div class="map-info relative flex flex-col gap-4 p-5 sm:absolute sm:bottom-6 sm:left-6 sm:max-w-sm sm:rounded-3xl sm:p-6">
           <div class="flex items-start gap-3">
@@ -691,19 +699,19 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
             </span>
             <div>
-              <p class="font-bold">Aether Odontologia</p>
-              <address class="mt-1 text-sm not-italic text-slate2">Av. Brigadeiro Faria Lima, 4500 — 21º andar<br>Itaim Bibi, São Paulo — SP</address>
-              <p class="mt-2 text-xs text-slate2">Estacionamento com valet no local · Metrô Faria Lima a 600 m</p>
+              <p class="font-bold">Clínica Odontoral Prime</p>
+              <address class="mt-1 text-sm not-italic text-slate2">Rua Engenheiro Eugênio Motta, 185 — Centro<br>Mogi das Cruzes — SP · 08730-120</address>
+              <p class="mt-2 text-xs text-slate2">(11) 4724-8080 · WhatsApp (11) 97219-3918</p>
             </div>
           </div>
           <div class="flex flex-wrap gap-2">
             <a class="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white" data-cursor="hover" target="_blank" rel="noopener"
-               href="https://www.google.com/maps/dir/?api=1&destination=Av.+Brigadeiro+Faria+Lima,+4500,+Itaim+Bibi,+S%C3%A3o+Paulo+-+SP">
+               href="https://www.google.com/maps/dir/?api=1&destination=Rua+Engenheiro+Eug%C3%AAnio+Motta,+185,+Centro,+Mogi+das+Cruzes+-+SP,+08730-120">
               Como chegar
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M9 7h8v8"/></svg>
             </a>
             <a class="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-4 py-2 text-xs font-semibold" data-cursor="hover" target="_blank" rel="noopener"
-               href="https://waze.com/ul?q=Av.+Brigadeiro+Faria+Lima,+4500,+Itaim+Bibi,+S%C3%A3o+Paulo+-+SP&navigate=yes">Abrir no Waze</a>
+               href="https://waze.com/ul?q=Rua+Engenheiro+Eug%C3%AAnio+Motta,+185,+Centro,+Mogi+das+Cruzes+-+SP,+08730-120&navigate=yes">Abrir no Waze</a>
           </div>
         </div>
       </div>
@@ -713,27 +721,34 @@
       <div class="mx-auto max-w-[1440px] px-4 py-14 sm:px-8">
         <div class="grid gap-12 md:grid-cols-3">
           <div>
-            <span class="text-sm font-bold tracking-[.32em]">AETHER</span>
-            <p class="mt-4 max-w-xs text-sm text-slate2">Odontologia & estética avançada. Responsável técnico: Dr(a). Nome Sobrenome — CRO-SP 00000.</p>
+            <div class="flex items-center gap-3"><svg width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" fill="#12355B"/>
+        <path d="M20 12.2c-2.1-1.5-6-1.4-7 1.5-.9 2.5.4 4.6 1.1 6.8.6 2.1.7 6.2 2.5 6.8 1.6.6 1.7-3.9 3.4-3.9s1.8 4.5 3.4 3.9c1.8-.6 1.9-4.7 2.5-6.8.7-2.2 2-4.3 1.1-6.8-1-2.9-4.9-3-7-1.5z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M14.5 9.4l2.2 1.6L20 7.6l3.3 3.4 2.2-1.6" stroke="#C9A45C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><span class="flex flex-col leading-none">
+        <span class="text-[15px] font-extrabold tracking-[.16em] text-deep">ODONTORAL</span>
+        <span class="mt-1 text-[9px] font-bold tracking-[.62em] text-aqua">PRIME</span>
+      </span></div>
+            <p class="mt-4 max-w-xs text-sm text-slate2">Implantes, estética e reabilitação oral em Mogi das Cruzes. Tradição Odontoral desde 1986.<br>Responsável técnico: Dr(a). Nome Sobrenome — CRO-SP 00000.</p>
           </div>
           <nav aria-label="Redes sociais" class="flex flex-col gap-3 text-sm font-medium">
             <span class="mb-2 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Social</span>
-            <a href="#" class="w-fit"><span class="roll"><span data-text="Instagram ↗">Instagram ↗</span></span></a>
-            <a href="#" class="w-fit"><span class="roll"><span data-text="YouTube ↗">YouTube ↗</span></span></a>
-            <a href="#" class="w-fit"><span class="roll"><span data-text="WhatsApp ↗">WhatsApp ↗</span></span></a>
+            <a href="https://www.instagram.com/odontoral.implantes/" target="_blank" rel="noopener" class="w-fit"><span class="roll"><span data-text="Instagram ↗">Instagram ↗</span></span></a>
+            <a href="https://www.youtube.com/channel/UCceH4KwQJZ_BhGlhpFe2saQ" target="_blank" rel="noopener" class="w-fit"><span class="roll"><span data-text="YouTube ↗">YouTube ↗</span></span></a>
+            <a href="https://wa.me/5511972193918" target="_blank" rel="noopener" class="w-fit"><span class="roll"><span data-text="WhatsApp ↗">WhatsApp ↗</span></span></a>
           </nav>
           <div class="flex flex-col gap-3 text-sm font-medium">
             <span class="mb-2 text-[11px] font-semibold uppercase tracking-[.16em] text-slate2">Contato</span>
-            <a href="mailto:contato@aether.odonto" class="w-fit"><span class="roll"><span data-text="contato@aether.odonto">contato@aether.odonto</span></span></a>
-            <a href="tel:+5511900000000" class="w-fit"><span class="roll"><span data-text="+55 11 90000-0000">+55 11 90000-0000</span></span></a>
+            <a href="mailto:contato@odontoral.com.br" class="w-fit"><span class="roll"><span data-text="contato@odontoral.com.br">contato@odontoral.com.br</span></span></a>
+            <a href="tel:+551147248080" class="w-fit"><span class="roll"><span data-text="(11) 4724-8080">(11) 4724-8080</span></span></a>
           </div>
         </div>
         <div class="mt-16 select-none overflow-hidden" aria-hidden="true">
-          <p class="text-[21vw] font-extrabold leading-none tracking-tightest text-transparent [-webkit-text-stroke:1.5px_rgba(13,27,42,.08)]">AETHER</p>
+          <p class="text-[15.5vw] font-extrabold leading-none tracking-tightest text-transparent [-webkit-text-stroke:1.5px_rgba(18,53,91,.1)]">ODONTORAL</p>
         </div>
         <div class="mt-6 flex flex-col justify-between gap-3 border-t border-ink/5 pt-6 text-[11px] text-slate2 sm:flex-row">
-          <span>© <span id="year"></span> Aether Odontologia. Todos os direitos reservados.</span>
-          <span>Modelos 3D meramente ilustrativos. Resultados variam de paciente para paciente.</span>
+          <span>© <span id="year"></span> Clínica Odontoral Prime · CNPJ 48.032.625/0001-61</span>
+          <span>* Certificação Internacional de Qualidade no Atendimento (AIOI, 2011). Modelos 3D ilustrativos; resultados variam de paciente para paciente.</span>
         </div>
       </div>
     </footer>
@@ -751,7 +766,7 @@
 
 <script>
 /* =============================================================
-   AETHER — Interações
+   ODONTORAL PRIME — Interações
    Módulos: Env · Scroll · Cursor · Magnetic · Hero3D · HeroIntro ·
             Journey (dente 3D) · Bento · Cases · Form
    ============================================================= */
@@ -997,7 +1012,7 @@
 
     gsap.to('#heroTitle', { yPercent: -15, opacity: .25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
 
-    const words = ['especialistas dedicados', 'atendimento acolhedor', 'tecnologia a seu favor', 'resultados naturais'];
+    const words = ['quase 40 anos de experiência', 'odontologia digital', 'atendimento acolhedor', 'resultados naturais'];
     const w = $('#dynamicWord'); let i = 0;
     setInterval(() => {
       i = (i + 1) % words.length;
@@ -1039,14 +1054,14 @@
     let lastHealed = null;
     const placeOverlays = (sx, sy, m, p, size) => {
       backdrop.style.transform = `translate(${sx}px, ${sy}px) translate(-50%, -50%)`;
-      backdrop.style.setProperty('--tint', mixHex('#F3E1C8', '#CDEFF3', m));
+      backdrop.style.setProperty('--tint', mixHex('#F3E1C8', '#DCE5F0', m));
       sparkles.style.transform = `translate(${sx}px, ${sy}px)`;
       sparkles.style.opacity = smooth(.66, .8, p);
       chip.style.transform = `translate(${sx}px, ${sy + size * .52}px) translate(-50%, 0)`;
       const healed = m > .5;
       if (healed !== lastHealed) {
         chipTxt.textContent = healed ? 'Depois do tratamento' : 'Antes do tratamento';
-        chipDot.style.background = healed ? '#12A9BC' : '#C2643C';
+        chipDot.style.background = healed ? '#C9A45C' : '#C2643C';
         lastHealed = healed;
       }
     };
@@ -1277,7 +1292,7 @@
         </div>
       </article>`).join('') + `
       <div class="flex w-[70vw] shrink-0 snap-center flex-col justify-center gap-6 px-4 sm:w-[420px]">
-        <p class="text-3xl font-bold leading-tight sm:text-4xl">+12.000 sorrisos cuidados com <span class="serif-accent text-aqua">carinho e precisão.</span></p>
+        <p class="text-3xl font-bold leading-tight sm:text-4xl">Desde 1986 cuidando de sorrisos em <span class="serif-accent text-aqua">Mogi das Cruzes.</span></p>
         <a href="#agendar" class="nav-link w-fit text-sm font-semibold text-slate2 hover:text-ink">Comece o seu →</a>
       </div>`;
     $('#hTotal').textContent = String(CASES.length).padStart(2, '0');
